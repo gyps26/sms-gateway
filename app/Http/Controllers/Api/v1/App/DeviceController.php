@@ -29,7 +29,9 @@ use App\Models\Device;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use PragmaRX\Google2FA\Google2FA;
+use Throwable;
 
 class DeviceController extends Controller
 {
@@ -55,50 +57,58 @@ class DeviceController extends Controller
      */
     public function register(RegisterDeviceData $data): JsonResponse
     {
-        if ($data->email) {
-            if (! Auth::guard('web')->once(['email' => $data->email, 'password' => $data->password])) {
-                return new JsonResponse(['message' => __('messages.device.register.invalid_credentials')], 401);
-            }
-        } else {
-            $subject = JwtAuth::parseToken($data->token);
+        try {
+            if ($data->email) {
+                if (! Auth::guard('web')->once(['email' => $data->email, 'password' => $data->password])) {
+                    return new JsonResponse(['message' => __('messages.device.register.invalid_credentials')], 401);
+                }
+            } else {
+                $subject = JwtAuth::parseToken($data->token);
 
-            if (is_null($subject) || ! Auth::onceUsingId($subject)) {
-                return new JsonResponse(['message' => __('messages.device.register.invalid_qr_code')], 401);
+                if (is_null($subject) || ! Auth::onceUsingId($subject)) {
+                    return new JsonResponse(['message' => __('messages.device.register.invalid_qr_code')], 401);
+                }
             }
-        }
 
-        if (Auth::user()->two_factor_secret) {
-            if ($data->authCode) {
-                $google2fa = new Google2FA();
-                if (! $google2fa->verifyKey(decrypt(Auth::user()->two_factor_secret),
-                    $data->authCode)) {
+            if (Auth::user()->two_factor_secret) {
+                if ($data->authCode) {
+                    $google2fa = new Google2FA();
+                    if (! $google2fa->verifyKey(decrypt(Auth::user()->two_factor_secret),
+                        $data->authCode)) {
+                        return new JsonResponse(
+                            data: ['message' => __('messages.device.register.2fa.incorrect')],
+                            status: 401,
+                            headers: ['X-2FA-Required' => 'yes']
+                        );
+                    }
+                } else {
                     return new JsonResponse(
-                        data: ['message' => __('messages.device.register.2fa.incorrect')],
+                        data: ['message' => __('messages.device.register.2fa.required')],
                         status: 401,
                         headers: ['X-2FA-Required' => 'yes']
                     );
                 }
-            } else {
-                return new JsonResponse(
-                    data: ['message' => __('messages.device.register.2fa.required')],
-                    status: 401,
-                    headers: ['X-2FA-Required' => 'yes']
-                );
             }
+
+            Gate::authorize('create', Device::class);
+
+            $device = Device::query()->updateOrCreate(
+                ['android_id' => $data->androidId, 'owner_id' => Auth::id()],
+                [...$data->device->except('sims')->toArray(), 'enabled' => true]
+            );
+
+            when($data->device->sims, fn($sims) => $device->updateOrCreateSims($sims->toArray()));
+
+            $token = JwtAuth::createToken($device);
+
+            return new JsonResponse(['device_id' => $device->id, 'token' => $token,             'license_code' => config('app.license_code')]);
+        } catch (Throwable $e) {
+            Log::error('Device registration failed', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+            return new JsonResponse(['message' => $e->getMessage()], 500);
         }
-
-        Gate::authorize('create', Device::class);
-
-        $device = Device::query()->updateOrCreate(
-            ['android_id' => $data->androidId, 'owner_id' => Auth::id()],
-            [...$data->device->except('sims')->toArray(), 'enabled' => true]
-        );
-
-        when($data->device->sims, fn($sims) => $device->updateOrCreateSims($sims->toArray()));
-
-        $token = JwtAuth::createToken($device);
-
-        return new JsonResponse(['device_id' => $device->id, 'token' => $token,             'license_code' => config('app.license_code')]);
     }
 
     /**
