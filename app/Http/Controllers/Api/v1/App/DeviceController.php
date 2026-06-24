@@ -91,7 +91,7 @@ class DeviceController extends Controller
 
         $device = Device::query()->updateOrCreate(
             ['android_id' => $data->androidId, 'owner_id' => Auth::id()],
-            $data->device->except('sims')->toArray()
+            [...$data->device->except('sims')->toArray(), 'enabled' => true]
         );
 
         when($data->device->sims, fn($sims) => $device->updateOrCreateSims($sims->toArray()));
