@@ -9,8 +9,8 @@ if [ "$1" = "supervisord" ]; then
         storage/framework/cache/data storage/framework/sessions \
         storage/framework/views storage/logs
 
-    # Create .env from example if it doesn't exist (needed for install wizard)
-    [ -f .env ] || cp .env.example .env
+    # Create .env if it doesn't exist (needed for install wizard permissions check)
+    [ -f .env ] || touch .env
 
     chown -R www-data:www-data .env storage bootstrap/cache public
     chmod -R 775 .env storage bootstrap/cache public
