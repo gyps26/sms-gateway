@@ -4,6 +4,12 @@ set -e
 if [ "$1" = "supervisord" ]; then
     rm -f /var/www/html/storage/installed
 
+    # Ensure storage directories exist
+    mkdir -p storage/app/private storage/app/public \
+        storage/framework/cache/data storage/framework/sessions \
+        storage/framework/views storage/logs \
+        && chmod -R 775 storage bootstrap/cache
+
     echo "Waiting for MySQL..."
 
     retries=30
