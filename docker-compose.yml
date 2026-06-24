@@ -1,12 +1,7 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: gypson1234/sms-gateway:latest
     restart: unless-stopped
-    ports:
-      - "${APP_PORT:-80}:80"
     environment:
       APP_ENV: production
       APP_DEBUG: false
@@ -38,9 +33,6 @@ services:
         condition: service_healthy
 
   queue:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: gypson1234/sms-gateway:latest
     command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
     restart: unless-stopped
@@ -75,9 +67,6 @@ services:
       disable: true
 
   scheduler:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: gypson1234/sms-gateway:latest
     command: php artisan schedule:work
     restart: unless-stopped
