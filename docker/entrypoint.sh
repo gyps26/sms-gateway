@@ -8,8 +8,12 @@ if [ "$1" = "supervisord" ]; then
     mkdir -p storage/app/private storage/app/public \
         storage/framework/cache/data storage/framework/sessions \
         storage/framework/views storage/logs
-    chown -R www-data:www-data storage bootstrap/cache public
-    chmod -R 775 storage bootstrap/cache public
+
+    # Create .env from example if it doesn't exist (needed for install wizard)
+    [ -f .env ] || cp .env.example .env
+
+    chown -R www-data:www-data .env storage bootstrap/cache public
+    chmod -R 775 .env storage bootstrap/cache public
 
     echo "Waiting for MySQL..."
 
