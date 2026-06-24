@@ -1,0 +1,3 @@
+<div>
+    {{ $received->content }}
+</div>

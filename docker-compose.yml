@@ -1,0 +1,146 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sms-gateway
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-80}:80"
+    environment:
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_KEY: "${APP_KEY}"
+      APP_URL: "${APP_URL}"
+      APP_TIMEZONE: UTC
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: sms-gateway
+      DB_USERNAME: sail
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_PREFIX: ""
+      SESSION_DRIVER: database
+      SESSION_LIFETIME: 120
+      QUEUE_CONNECTION: database
+      CACHE_STORE: file
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MAIL_MAILER: log
+      TELESCOPE_ENABLED: false
+      APP_LICENSE_CODE: ""
+    volumes:
+      - app-storage:/var/www/html/storage
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  queue:
+    image: sms-gateway
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_KEY: "${APP_KEY}"
+      APP_URL: "${APP_URL}"
+      APP_TIMEZONE: UTC
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: sms-gateway
+      DB_USERNAME: sail
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_PREFIX: ""
+      SESSION_DRIVER: database
+      SESSION_LIFETIME: 120
+      QUEUE_CONNECTION: database
+      CACHE_STORE: file
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MAIL_MAILER: log
+      TELESCOPE_ENABLED: false
+      APP_LICENSE_CODE: ""
+    volumes:
+      - app-storage:/var/www/html/storage
+    depends_on:
+      - mysql
+      - redis
+    healthcheck:
+      disable: true
+
+  scheduler:
+    image: sms-gateway
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: php artisan schedule:work
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      APP_DEBUG: false
+      APP_KEY: "${APP_KEY}"
+      APP_URL: "${APP_URL}"
+      APP_TIMEZONE: UTC
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: sms-gateway
+      DB_USERNAME: sail
+      DB_PASSWORD: "${DB_PASSWORD}"
+      DB_PREFIX: ""
+      SESSION_DRIVER: database
+      SESSION_LIFETIME: 120
+      QUEUE_CONNECTION: database
+      CACHE_STORE: file
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      MAIL_MAILER: log
+      TELESCOPE_ENABLED: false
+      APP_LICENSE_CODE: ""
+    volumes:
+      - app-storage:/var/www/html/storage
+    depends_on:
+      - mysql
+      - redis
+    healthcheck:
+      disable: true
+
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: sms-gateway
+      MYSQL_USER: sail
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker/mysql.cnf:/etc/mysql/conf.d/mysql.cnf:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  app-storage:
+  mysql-data:
+  redis-data:

@@ -1,0 +1,4 @@
+*
+!scribe/
+!scribe/**
+!.gitignore

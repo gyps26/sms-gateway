@@ -1,0 +1,1014 @@
+name: Campaigns
+description: Campaigns
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/campaigns
+    metadata:
+      groupName: Campaigns
+      groupDescription: Campaigns
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List all campaigns'
+      description: 'Returns a list of campaigns. The campaigns are returned sorted by creation date, with the most recently created campaign appearing first.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      status:
+        name: status
+        description: 'Filter by campaign status.'
+        required: false
+        example: Sent
+        type: string
+        enumValues:
+          - Queued
+          - Processing
+          - Processed
+          - Scheduled
+          - Completed
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      type:
+        name: type
+        description: 'Filter by campaign type.'
+        required: false
+        example: MMS
+        type: string
+        enumValues:
+          - SMS
+          - MMS
+          - WhatsApp
+          - 'USSD Pull'
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      recurring:
+        name: recurring
+        description: 'Filter by recurring campaigns.'
+        required: false
+        example: true
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      after:
+        name: after
+        description: 'Filter by campaigns after a certain date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date before or equal to <code>before</code>.'
+        required: false
+        example: '2021-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      before:
+        name: before
+        description: 'Filter by campaigns before a certain date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>after</code>.'
+        required: false
+        example: '2025-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanQueryParameters:
+      status: Sent
+      type: MMS
+      recurring: true
+      after: '2021-01-01'
+      before: '2025-01-01'
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":7,"name":"Leo Gusikowski","scheduled_at":null,"timezone":"Atlantic\/Faroe","recurring":false,"frequency":null,"frequency_unit":null,"ends_at":null,"repeat_at":null,"active_hours":"09:00-17:00","days_of_week":[1,3,5,6,7],"status":"Processed","type":"USSD Pull","options":{"delay":"39","prioritize":false},"created_at":"2025-09-08T05:42:25.000000Z","updated_at":"2025-09-08T05:42:25.000000Z"},{"id":8,"name":"Mr. Orland Hermiston II","scheduled_at":"2026-05-01T21:31:16.000000Z","timezone":"America\/Boise","recurring":false,"frequency":null,"frequency_unit":null,"ends_at":null,"repeat_at":null,"active_hours":"09:00-17:00","days_of_week":[1,2,4,5],"status":"Processed","type":"SMS","options":{"delay":"60","prioritize":false,"delivery_report":false},"created_at":"2025-09-08T05:42:25.000000Z","updated_at":"2025-09-08T05:42:25.000000Z"}],"links":{"first":"\/?page=1","last":"\/?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":1,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"\/?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"path":"\/","per_page":100,"to":2,"total":2}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 'The ID of the campaign.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 'The name of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      scheduled_at:
+        name: scheduled_at
+        description: 'The date and time when the campaign is scheduled to run.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      timezone:
+        name: timezone
+        description: 'The timezone of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      recurring:
+        name: recurring
+        description: 'Whether the campaign is recurring.'
+        required: true
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      frequency:
+        name: frequency
+        description: 'The frequency of the campaign.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      frequency_unit:
+        name: frequency_unit
+        description: 'The unit of the frequency.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      ends_at:
+        name: ends_at
+        description: 'The date and time when the recurring campaign ends.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      repeat_at:
+        name: repeat_at
+        description: 'The date and time when the campaign is scheduled to repeat.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      active_hours:
+        name: active_hours
+        description: 'The timespan of a day when the campaign is active.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      days_of_week:
+        name: days_of_week
+        description: 'The days of the week when the campaign is active.'
+        required: true
+        example: null
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: 'The status of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      type:
+        name: type
+        description: 'The type of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options:
+        name: options
+        description: 'The options of the campaign.'
+        required: true
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options.delay:
+        name: options.delay
+        description: 'The delay between each item before sending the next one.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options.prioritize:
+        name: options.prioritize
+        description: 'Whether to prioritize the campaign.'
+        required: false
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options.delivery_report:
+        name: options.delivery_report
+        description: 'Whether to request delivery report for SMS.'
+        required: false
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      created_at:
+        name: created_at
+        description: 'The date and time the campaign was created.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      updated_at:
+        name: updated_at
+        description: 'The date and time the campaign was last updated.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/campaigns/{id}'
+    metadata:
+      groupName: Campaigns
+      groupDescription: Campaigns
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Retrieve a campaign'
+      description: 'Retrieves a Campaign object.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the campaign.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":9,"name":"Stefanie Lebsack","scheduled_at":"2025-10-23T01:36:18.000000Z","timezone":"Asia\/Atyrau","recurring":false,"frequency":null,"frequency_unit":null,"ends_at":null,"repeat_at":null,"active_hours":"00:00-23:59","days_of_week":[1,2,5,6],"status":"Processed","type":"SMS","options":{"delay":"57","prioritize":false,"delivery_report":true},"created_at":"2025-09-08T05:42:25.000000Z","updated_at":"2025-09-08T05:42:25.000000Z"}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 'The ID of the campaign.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 'The name of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      scheduled_at:
+        name: scheduled_at
+        description: 'The date and time when the campaign is scheduled to run.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      timezone:
+        name: timezone
+        description: 'The timezone of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      recurring:
+        name: recurring
+        description: 'Whether the campaign is recurring.'
+        required: true
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      frequency:
+        name: frequency
+        description: 'The frequency of the campaign.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      frequency_unit:
+        name: frequency_unit
+        description: 'The unit of the frequency.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      ends_at:
+        name: ends_at
+        description: 'The date and time when the recurring campaign ends.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      repeat_at:
+        name: repeat_at
+        description: 'The date and time when the campaign is scheduled to repeat.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      active_hours:
+        name: active_hours
+        description: 'The timespan of a day when the campaign is active.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      days_of_week:
+        name: days_of_week
+        description: 'The days of the week when the campaign is active.'
+        required: true
+        example: null
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: 'The status of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      type:
+        name: type
+        description: 'The type of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options:
+        name: options
+        description: 'The options of the campaign.'
+        required: true
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options.delay:
+        name: options.delay
+        description: 'The delay between each item before sending the next one.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options.prioritize:
+        name: options.prioritize
+        description: 'Whether to prioritize the campaign.'
+        required: false
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options.delivery_report:
+        name: options.delivery_report
+        description: 'Whether to request delivery report for SMS.'
+        required: false
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      created_at:
+        name: created_at
+        description: 'The date and time the campaign was created.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      updated_at:
+        name: updated_at
+        description: 'The date and time the campaign was last updated.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/campaigns/{campaign_id}/devices'
+    metadata:
+      groupName: Campaigns
+      groupDescription: Campaigns
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List all devices used in a campaign'
+      description: 'Returns a list of devices used in a campaign. The devices are returned with sims used in the campaign and status of the campaign on the device.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      campaign_id:
+        name: campaign_id
+        description: 'The ID of the campaign.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      campaign_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":11,"name":null,"model":"Nokia X20","android_version":"7","app_version":"0.20.34","battery":46,"is_charging":false,"enabled":true,"sims":[{"id":15,"name":"Koelpin, Nolan and Bailey","label":null,"number":"+15202822732","country":"SZ","carrier":"Miller Ltd","slot":0,"data_roaming":false,"signal_strength":4,"active":true}]},{"id":12,"name":null,"model":"Xiaomi Mi 11","android_version":"9","app_version":"3.73.98","battery":71,"is_charging":false,"enabled":true,"sims":[{"id":16,"name":"Hermiston, Parker and Marvin","label":null,"number":"+13648507362","country":"GE","carrier":"Littel Ltd","slot":0,"data_roaming":false,"signal_strength":4,"active":true}]}],"links":{"first":"\/?page=1","last":"\/?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":1,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"\/?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"path":"\/","per_page":10,"to":2,"total":2}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 'The ID of the device.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 'The name of the device.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      model:
+        name: model
+        description: 'The model of the device.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      enabled:
+        name: enabled
+        description: 'Whether the user has logged in to the app on the device.'
+        required: true
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      android_version:
+        name: android_version
+        description: 'The android version of the device.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      app_version:
+        name: app_version
+        description: 'The app version installed on the device.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      battery:
+        name: battery
+        description: 'The percentage of battery remaining on the device.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      is_charging:
+        name: is_charging
+        description: 'Whether the device is charging or not.'
+        required: true
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: 'The status of the campaign on the device.'
+        required: true
+        example: null
+        type: string
+        enumValues:
+          - Pending
+          - Queued
+          - Stalled
+          - Succeeded
+          - Failed
+          - Cancelling
+          - Cancelled
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      sims:
+        name: sims
+        description: 'The sims of the device that are used in the campaign.'
+        required: true
+        example: null
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'sims.*.id':
+        name: 'sims.*.id'
+        description: 'The ID of the sim.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'sims.*.name':
+        name: 'sims.*.name'
+        description: 'The name of the sim.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'sims.*.label':
+        name: 'sims.*.label'
+        description: 'The label of the sim.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'sims.*.number':
+        name: 'sims.*.number'
+        description: 'The number of the sim.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'sims.*.country':
+        name: 'sims.*.country'
+        description: 'The country of the sim.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'sims.*.carrier':
+        name: 'sims.*.carrier'
+        description: 'The carrier of the sim.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'sims.*.slot':
+        name: 'sims.*.slot'
+        description: 'The slot of the sim.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'sims.*.active':
+        name: 'sims.*.active'
+        description: 'Whether the sim is active or not.'
+        required: true
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/campaigns/{campaign_id}/sending-servers'
+    metadata:
+      groupName: Campaigns
+      groupDescription: Campaigns
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List all sending servers used in a campaign'
+      description: 'Returns a list of sending servers used in a campaign. The sending servers are returned with sender ids used in the campaign and status of the campaign on the sending server.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      campaign_id:
+        name: campaign_id
+        description: 'The ID of the campaign.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      campaign_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":3,"name":"Gideon Boyer","enabled":true,"sender_ids":[{"id":21,"value":"942561"}]},{"id":4,"name":"Bridgette D''Amore","enabled":true,"sender_ids":[{"id":22,"value":"597151"}]}],"links":{"first":"\/?page=1","last":"\/?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":1,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"\/?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"path":"\/","per_page":10,"to":2,"total":2}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 'The ID of the sending server.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 'The name of the sending server.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: 'The status of the campaign on this sending server.'
+        required: true
+        example: null
+        type: string
+        enumValues:
+          - Pending
+          - Queued
+          - Stalled
+          - Succeeded
+          - Failed
+          - Cancelling
+          - Cancelled
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      sender_ids:
+        name: sender_ids
+        description: 'The sender ids of the sending server that are used in the campaign.'
+        required: true
+        example: null
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'sender_ids.*.id':
+        name: 'sender_ids.*.id'
+        description: 'The ID of the sender id.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      'sender_ids.*.value':
+        name: 'sender_ids.*.value'
+        description: 'The value of the sender id.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/v1/campaigns/{id}'
+    metadata:
+      groupName: Campaigns
+      groupDescription: Campaigns
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update a campaign'
+      description: 'Updates the specific campaign by setting the values of the parameters passed.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the campaign.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: 'The name of the campaign. Must be at least 3 characters.'
+        required: true
+        example: 'New Campaign'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      name: 'New Campaign'
+    fileParameters: []
+    responses:
+      -
+        status: 204
+        content: null
+        headers: []
+        description: 'No content'
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/campaigns/{id}'
+    metadata:
+      groupName: Campaigns
+      groupDescription: Campaigns
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete a campaign'
+      description: 'Permanently deletes a campaign. Also deletes all messages or USSD pulls associated with it. It cannot be undone.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the campaign.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 204
+        content: null
+        headers: []
+        description: 'No content'
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []

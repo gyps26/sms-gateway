@@ -1,0 +1,196 @@
+name: 'Call Log'
+description: 'Call Log'
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/calls
+    metadata:
+      groupName: 'Call Log'
+      groupDescription: 'Call Log'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List all calls'
+      description: 'Returns a list of calls. The calls are returned sorted by creation date, with the most recently created call appearing first.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      type:
+        name: type
+        description: 'Filter by call type.'
+        required: false
+        example: Incoming
+        type: string
+        enumValues:
+          - Incoming
+          - Outgoing
+          - Missed
+          - Voicemail
+          - Rejected
+          - Blocked
+          - 'Answered Externally'
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      sim:
+        name: sim
+        description: 'Filter by SIM ID. Must be at least 1.'
+        required: false
+        example: 1.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      answered:
+        name: answered
+        description: ''
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanQueryParameters:
+      type: Incoming
+      sim: 1.0
+      answered: false
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":141,"number":"973-450-3511","type":"Missed","sim_id":1,"started_at":"1991-01-07T14:12:01.000000Z","duration":1912},{"id":142,"number":"724-602-7973","type":"Voicemail","sim_id":1,"started_at":"1988-04-26T00:07:31.000000Z","duration":1669}],"links":{"first":"\/?page=1","last":"\/?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":1,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"\/?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"path":"\/","per_page":100,"to":2,"total":2}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 'The ID of the call.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      number:
+        name: number
+        description: 'The phone number of the call.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      type:
+        name: type
+        description: 'The type of the call.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      sim_id:
+        name: sim_id
+        description: 'The ID of the SIM used for the call.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      started_at:
+        name: started_at
+        description: 'The time when the call was started.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      duration:
+        name: duration
+        description: 'The duration of the call in seconds.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/calls/{id}'
+    metadata:
+      groupName: 'Call Log'
+      groupDescription: 'Call Log'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete a call'
+      description: 'Permanently deletes a call.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the call.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 204
+        content: null
+        headers: []
+        description: 'No content'
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []

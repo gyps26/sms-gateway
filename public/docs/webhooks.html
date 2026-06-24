@@ -1,0 +1,108 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html lang="en-US" data-preset="contrast" data-primary-color="#307FFF"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><meta name="robots" content="noindex"><meta name="built-on" content="2025-12-17T12:15:03.1766716"><title>Webhooks | User</title><script type="application/json" id="virtual-toc-data">[{"id":"fields","level":0,"title":"Fields","anchor":"#fields"},{"id":"payload","level":0,"title":"Payload","anchor":"#payload"}]</script><script type="application/json" id="topic-shortcuts"></script><link href="frontend/app.css" rel="stylesheet"><meta name="msapplication-TileColor" content="#000000"><link rel="icon" type="image/png" sizes="32x32" href="writerside_32.png"><link rel="icon" type="image/png" sizes="64x64" href="writerside_64.png"><meta name="image" content=""><!-- Open Graph --><meta property="og:title" content="Webhooks | User"><meta property="og:description" content=""><meta property="og:image" content=""><meta property="og:site_name" content="User Help"><meta property="og:type" content="website"><meta property="og:locale" content="en_US"><meta property="og:url" content="writerside-documentation/webhooks.html"><!-- End Open Graph --><!-- Twitter Card --><meta name="twitter:card" content="summary_large_image"><meta name="twitter:site" content=""><meta name="twitter:title" content="Webhooks | User"><meta name="twitter:description" content=""><meta name="twitter:creator" content=""><meta name="twitter:image:src" content=""><!-- End Twitter Card --><!-- Schema.org WebPage --><script type="application/ld+json">{
+    "@context": "http://schema.org",
+    "@type": "WebPage",
+    "@id": "writerside-documentation/webhooks.html#webpage",
+    "url": "writerside-documentation/webhooks.html",
+    "name": "Webhooks | User",
+    "description": "",
+    "image": "",
+    "inLanguage":"en-US"
+}</script><!-- End Schema.org --><!-- Schema.org WebSite --><script type="application/ld+json">{
+    "@type": "WebSite",
+    "@id": "writerside-documentation/#website",
+    "url": "writerside-documentation/",
+    "name": "User Help"
+}</script><!-- End Schema.org --></head><body data-id="webhooks" data-main-title="Webhooks" data-article-props="{&quot;seeAlsoStyle&quot;:&quot;links&quot;}" data-template="article" data-breadcrumbs=""><div class="wrapper"><main class="panel _main"><header class="panel__header"><div class="container"><h3>User  Help</h3><div class="panel-trigger"></div></div></header><section class="panel__content"><div class="container"><article class="article" data-shortcut-switcher="inactive"><h1 data-toc="webhooks" id="webhooks.md">Webhooks</h1><p id="-njx4jg_3">A webhook is a method for automatically transmitting data to your application via HTTP. Since webhooks are event-driven, they activate when specific events occur, such as <span class="control" id="-njx4jg_7">message.received</span>, <span class="control" id="-njx4jg_8">message.status.updated</span>, <span class="control" id="-njx4jg_9">call.added</span>, or <span class="control" id="-njx4jg_10">ussd-pull.status.updated</span>. They help automate processes within your application by responding to these events. For instance, in an e-commerce app, if you want customers to receive order status updates via SMS, you can set up a webhook for the <span class="control" id="-njx4jg_11">message.received</span> event. This webhook can respond to customers when their message contains a valid order ID. Such use cases are ideal for webhooks.</p><p id="-njx4jg_4">You can add a webhook by going to the Webhooks page from the navigation menu. Click on <span class="control" id="-njx4jg_12">Add</span> to add a new webhook.</p><section class="chapter"><h2 id="fields" data-toc="fields">Fields</h2><section class="chapter"><h3 id="url" data-toc="url">URL</h3><p id="-njx4jg_16">URL of the script where you want to receive the data from webhook. It will send a post-request to this URL.</p></section><section class="chapter"><h3 id="secret" data-toc="secret">Secret</h3><p id="-njx4jg_17">This is an optional field but recommended. This can be used to authenticate that the request is indeed coming from the webhook. It will add a header called <span class="control" id="-njx4jg_19">Signature</span> that will contain a signature the receiving app can use to verify if the payload hasn't been tampered with. You can verify the signature as shown below.</p><div class="tabs" id="-njx4jg_18" data-anchors="[-njx4jg_20,-njx4jg_21]"><div class="tabs__content" data-gtm="tab" id="-njx4jg_20" data-title="PHP"><div class="code-block" data-lang="php" data-title="PHP">
+    $secret = &quot;your_webhook_secret&quot;;
+    $payload = file_get_contents('php://input');
+    $signature = $_SERVER['HTTP_SIGNATURE'] ?? '';
+
+    $computedSignature = hash_hmac('sha256', $payload, $secret);
+    
+    if (hash_equals($computedSignature, $signature)) {
+        // 
+    } else {
+        http_response_code(403);
+        die('Forbidden');
+    }
+
+</div></div><div class="tabs__content" data-gtm="tab" id="-njx4jg_21" data-title="Laravel"><div class="code-block" data-lang="php" data-title="PHP">
+    use Illuminate\Support\Facades\Route;
+    use Illuminate\Http\Request;
+
+    Route::post('/webhook', function (Request $request) {
+        $secret = env('WEBHOOK_SECRET');
+        $signature = $request-&gt;header('Signature');
+        $computedSignature = hash_hmac('sha256', $request-&gt;getContent(), $secret);
+    
+        if (hash_equals($computedSignature, $signature)) {
+            return response()-&gt;json(null, 204);
+        }
+    });
+
+</div></div></div></section><section class="chapter"><h3 id="events" data-toc="events">Events</h3><p id="-njx4jg_24">Select events you want to subscribe to. There are four options as shown below.</p><ul class="list _bullet" id="-njx4jg_25"><li class="list__item" id="-njx4jg_26"><p id="-njx4jg_30"><span class="control" id="-njx4jg_31">call.added</span>: Triggers when a new call was added to call log on any of the SIMs connected to the account.</p></li><li class="list__item" id="-njx4jg_27"><p id="-njx4jg_32"><span class="control" id="-njx4jg_33">message.received</span>: Triggers when a new message is received on any of the SIMs connected to the account.</p></li><li class="list__item" id="-njx4jg_28"><p id="-njx4jg_34"><span class="control" id="-njx4jg_35">message.status.updated</span>: Triggers when a message status changes.</p></li><li class="list__item" id="-njx4jg_29"><p id="-njx4jg_36"><span class="control" id="-njx4jg_37">ussd-pull.status.updated</span>: Triggers when a USSD pull status changes.</p></li></ul></section></section><section class="chapter"><h2 id="payload" data-toc="payload">Payload</h2><p id="-njx4jg_38">You will receive a post-request on your URL when your subscribed events are triggered. The example payload for each event is shown below.</p><div class="tabs" id="-njx4jg_39" data-anchors="[-njx4jg_40,-njx4jg_41,-njx4jg_42,-njx4jg_43]"><div class="tabs__content" data-gtm="tab" id="-njx4jg_40" data-title="call.added"><div class="code-block" data-lang="json" data-title="JSON">
+{
+    event: &quot;message.status.updated&quot;,
+    data: {
+        &quot;id&quot;: 1,
+        &quot;number&quot;: &quot;+14156661234&quot;,
+        &quot;started_at&quot;: &quot;2023-10-01T12:00:00Z&quot;,
+        &quot;sim_id&quot;: 1,
+        &quot;duration&quot;: &quot;00:05:00&quot;,
+        &quot;type&quot;: &quot;Incoming&quot;
+    }
+}
+</div></div><div class="tabs__content" data-gtm="tab" id="-njx4jg_41" data-title="message.received"><div class="code-block" data-lang="json" data-title="JSON">
+{
+    event: &quot;message.received&quot;,
+    data: {
+        &quot;id&quot;: 1,
+        &quot;from&quot;: &quot;+14156661234&quot;,
+        &quot;to&quot;: &quot;+14256661234&quot;,
+        &quot;content&quot;: &quot;Sample message&quot;,
+        &quot;type&quot;: &quot;SMS&quot;,
+        &quot;messageable_type&quot;: &quot;sim&quot;,
+        &quot;messageable_id&quot;: 1,
+        &quot;sent_at&quot;: &quot;2023-10-01T12:00:00Z&quot;,
+        &quot;delivered_at&quot;: &quot;2023-10-01T12:05:00Z&quot;
+    }
+}
+</div></div><div class="tabs__content" data-gtm="tab" id="-njx4jg_42" data-title="message.status.updated"><div class="code-block" data-lang="json" data-title="JSON">
+{
+    event: &quot;message.status.updated&quot;,
+    data: {
+        &quot;id&quot;: 1,
+        &quot;from&quot;: &quot;+14156661234&quot;,
+        &quot;to&quot;: &quot;+14256661234&quot;,
+        &quot;content&quot;: &quot;Sample message&quot;,
+        &quot;type&quot;: &quot;SMS&quot;,
+        &quot;status&quot;: &quot;Sent&quot;,
+        &quot;retries&quot;: 0,
+        &quot;response&quot;: {
+            &quot;result_code&quot;: -1,
+            &quot;error_code&quot;: -1,
+        },
+        &quot;campaign_id&quot;: 1,
+        &quot;messageable_type&quot;: &quot;sim&quot;,
+        &quot;messageable_id&quot;: 1,
+        &quot;sent_at&quot;: &quot;2023-10-01T12:00:00Z&quot;,
+        &quot;delivered_at&quot;: &quot;2023-10-01T12:05:00Z&quot;
+    }
+}
+</div></div><div class="tabs__content" data-gtm="tab" id="-njx4jg_43" data-title="ussd-pull.status.updated"><div class="code-block" data-lang="json" data-title="JSON">
+{
+    event: &quot;ussd-pull.status.updated&quot;,
+    data: {
+        &quot;id&quot;: 1,
+        &quot;from&quot;: &quot;+14156661234&quot;,
+        &quot;code&quot;: &quot;*123#&quot;,
+        &quot;status&quot;: &quot;Completed&quot;,
+        &quot;response&quot;: &quot;Response message&quot;,
+        &quot;campaign_id&quot;: 1,
+        &quot;sim_id&quot;: 1,
+        &quot;sent_at&quot;: &quot;2023-10-01T12:00:00Z&quot;,
+        &quot;received_at&quot;: &quot;2023-10-01T12:01:00Z&quot;
+    }
+}
+</div></div></div></section><div class="last-modified">15 December 2025</div><div data-feedback-placeholder="true"></div><div class="navigation-links _bottom"><a href="quota.html" class="navigation-links__prev">Quota</a><a href="user-settings.html" class="navigation-links__next">User Settings</a></div></article><div id="disqus_thread"></div></div></section></main></div><script src="frontend/app.js"></script></body></html>

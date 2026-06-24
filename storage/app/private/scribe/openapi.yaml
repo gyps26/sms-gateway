@@ -1,0 +1,5269 @@
+openapi: 3.0.3
+info:
+  title: 'SMS Gateway API Documentation'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: '{{ config("app.url") }}'
+tags:
+  -
+    name: 'Call Log'
+    description: 'Call Log'
+  -
+    name: Campaigns
+    description: Campaigns
+  -
+    name: 'Contact Lists'
+    description: 'Contact Lists'
+  -
+    name: Contacts
+    description: Contacts
+  -
+    name: Devices
+    description: Devices
+  -
+    name: Messages
+    description: Messages
+  -
+    name: SenderIds
+    description: SenderIds
+  -
+    name: 'Sending Servers'
+    description: 'Sending Servers'
+  -
+    name: 'USSD Pulls'
+    description: 'USSD Pulls'
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'You can retrieve your token by visiting your dashboard and clicking <b>Generate API token</b>.'
+security:
+  -
+    default: []
+paths:
+  /api/v1/calls:
+    get:
+      summary: 'List all calls'
+      operationId: listAllCalls
+      description: 'Returns a list of calls. The calls are returned sorted by creation date, with the most recently created call appearing first.'
+      parameters:
+        -
+          in: query
+          name: type
+          description: 'Filter by call type.'
+          example: Incoming
+          required: false
+          schema:
+            type: string
+            description: 'Filter by call type.'
+            example: Incoming
+            nullable: true
+            enum:
+              - Incoming
+              - Outgoing
+              - Missed
+              - Voicemail
+              - Rejected
+              - Blocked
+              - 'Answered Externally'
+        -
+          in: query
+          name: sim
+          description: 'Filter by SIM ID. Must be at least 1.'
+          example: 1.0
+          required: false
+          schema:
+            type: number
+            description: 'Filter by SIM ID. Must be at least 1.'
+            example: 1.0
+            nullable: true
+        -
+          in: query
+          name: answered
+          description: ''
+          example: false
+          required: false
+          schema:
+            type: boolean
+            description: ''
+            example: false
+            nullable: true
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 141
+                      number: 973-450-3511
+                      type: Missed
+                      sim_id: 1
+                      started_at: '1991-01-07T14:12:01.000000Z'
+                      duration: 1912
+                    -
+                      id: 142
+                      number: 724-602-7973
+                      type: Voicemail
+                      sim_id: 1
+                      started_at: '1988-04-26T00:07:31.000000Z'
+                      duration: 1669
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 100
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 141
+                        number: 973-450-3511
+                        type: Missed
+                        sim_id: 1
+                        started_at: '1991-01-07T14:12:01.000000Z'
+                        duration: 1912
+                      -
+                        id: 142
+                        number: 724-602-7973
+                        type: Voicemail
+                        sim_id: 1
+                        started_at: '1988-04-26T00:07:31.000000Z'
+                        duration: 1669
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 141
+                        number:
+                          type: string
+                          example: 973-450-3511
+                        type:
+                          type: string
+                          example: Missed
+                        sim_id:
+                          type: integer
+                          example: 1
+                        started_at:
+                          type: string
+                          example: '1991-01-07T14:12:01.000000Z'
+                        duration:
+                          type: integer
+                          example: 1912
+                    required:
+                      - id
+                      - number
+                      - type
+                      - sim_id
+                      - started_at
+                      - duration
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 100
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - 'Call Log'
+  '/api/v1/calls/{id}':
+    delete:
+      summary: 'Delete a call'
+      operationId: deleteACall
+      description: 'Permanently deletes a call.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - 'Call Log'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the call.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/campaigns:
+    get:
+      summary: 'List all campaigns'
+      operationId: listAllCampaigns
+      description: 'Returns a list of campaigns. The campaigns are returned sorted by creation date, with the most recently created campaign appearing first.'
+      parameters:
+        -
+          in: query
+          name: status
+          description: 'Filter by campaign status.'
+          example: Sent
+          required: false
+          schema:
+            type: string
+            description: 'Filter by campaign status.'
+            example: Sent
+            nullable: true
+            enum:
+              - Queued
+              - Processing
+              - Processed
+              - Scheduled
+              - Completed
+        -
+          in: query
+          name: type
+          description: 'Filter by campaign type.'
+          example: MMS
+          required: false
+          schema:
+            type: string
+            description: 'Filter by campaign type.'
+            example: MMS
+            nullable: true
+            enum:
+              - SMS
+              - MMS
+              - WhatsApp
+              - 'USSD Pull'
+        -
+          in: query
+          name: recurring
+          description: 'Filter by recurring campaigns.'
+          example: true
+          required: false
+          schema:
+            type: boolean
+            description: 'Filter by recurring campaigns.'
+            example: true
+            nullable: true
+        -
+          in: query
+          name: after
+          description: 'Filter by campaigns after a certain date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date before or equal to <code>before</code>.'
+          example: '2021-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Filter by campaigns after a certain date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date before or equal to <code>before</code>.'
+            example: '2021-01-01'
+            nullable: true
+        -
+          in: query
+          name: before
+          description: 'Filter by campaigns before a certain date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>after</code>.'
+          example: '2025-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Filter by campaigns before a certain date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>after</code>.'
+            example: '2025-01-01'
+            nullable: true
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 7
+                      name: 'Leo Gusikowski'
+                      scheduled_at: null
+                      timezone: Atlantic/Faroe
+                      recurring: false
+                      frequency: null
+                      frequency_unit: null
+                      ends_at: null
+                      repeat_at: null
+                      active_hours: '09:00-17:00'
+                      days_of_week:
+                        - 1
+                        - 3
+                        - 5
+                        - 6
+                        - 7
+                      status: Processed
+                      type: 'USSD Pull'
+                      options:
+                        delay: '39'
+                        prioritize: false
+                      created_at: '2025-09-08T05:42:25.000000Z'
+                      updated_at: '2025-09-08T05:42:25.000000Z'
+                    -
+                      id: 8
+                      name: 'Mr. Orland Hermiston II'
+                      scheduled_at: '2026-05-01T21:31:16.000000Z'
+                      timezone: America/Boise
+                      recurring: false
+                      frequency: null
+                      frequency_unit: null
+                      ends_at: null
+                      repeat_at: null
+                      active_hours: '09:00-17:00'
+                      days_of_week:
+                        - 1
+                        - 2
+                        - 4
+                        - 5
+                      status: Processed
+                      type: SMS
+                      options:
+                        delay: '60'
+                        prioritize: false
+                        delivery_report: false
+                      created_at: '2025-09-08T05:42:25.000000Z'
+                      updated_at: '2025-09-08T05:42:25.000000Z'
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 100
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 7
+                        name: 'Leo Gusikowski'
+                        scheduled_at: null
+                        timezone: Atlantic/Faroe
+                        recurring: false
+                        frequency: null
+                        frequency_unit: null
+                        ends_at: null
+                        repeat_at: null
+                        active_hours: '09:00-17:00'
+                        days_of_week:
+                          - 1
+                          - 3
+                          - 5
+                          - 6
+                          - 7
+                        status: Processed
+                        type: 'USSD Pull'
+                        options:
+                          delay: '39'
+                          prioritize: false
+                        created_at: '2025-09-08T05:42:25.000000Z'
+                        updated_at: '2025-09-08T05:42:25.000000Z'
+                      -
+                        id: 8
+                        name: 'Mr. Orland Hermiston II'
+                        scheduled_at: '2026-05-01T21:31:16.000000Z'
+                        timezone: America/Boise
+                        recurring: false
+                        frequency: null
+                        frequency_unit: null
+                        ends_at: null
+                        repeat_at: null
+                        active_hours: '09:00-17:00'
+                        days_of_week:
+                          - 1
+                          - 2
+                          - 4
+                          - 5
+                        status: Processed
+                        type: SMS
+                        options:
+                          delay: '60'
+                          prioritize: false
+                          delivery_report: false
+                        created_at: '2025-09-08T05:42:25.000000Z'
+                        updated_at: '2025-09-08T05:42:25.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 7
+                        name:
+                          type: string
+                          example: 'Leo Gusikowski'
+                        scheduled_at:
+                          type: string
+                          example: null
+                        timezone:
+                          type: string
+                          example: Atlantic/Faroe
+                        recurring:
+                          type: boolean
+                          example: false
+                        frequency:
+                          type: string
+                          example: null
+                        frequency_unit:
+                          type: string
+                          example: null
+                        ends_at:
+                          type: string
+                          example: null
+                        repeat_at:
+                          type: string
+                          example: null
+                        active_hours:
+                          type: string
+                          example: '09:00-17:00'
+                        days_of_week:
+                          type: array
+                          example:
+                            - 1
+                            - 3
+                            - 5
+                            - 6
+                            - 7
+                          items:
+                            type: integer
+                        status:
+                          type: string
+                          example: Processed
+                        type:
+                          type: string
+                          example: 'USSD Pull'
+                        options:
+                          type: object
+                          properties:
+                            delay:
+                              type: string
+                              example: '39'
+                            prioritize:
+                              type: boolean
+                              example: false
+                        created_at:
+                          type: string
+                          example: '2025-09-08T05:42:25.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2025-09-08T05:42:25.000000Z'
+                    required:
+                      - id
+                      - name
+                      - scheduled_at
+                      - timezone
+                      - recurring
+                      - frequency
+                      - frequency_unit
+                      - ends_at
+                      - repeat_at
+                      - active_hours
+                      - days_of_week
+                      - status
+                      - type
+                      - options
+                      - created_at
+                      - updated_at
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 100
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - Campaigns
+  '/api/v1/campaigns/{id}':
+    get:
+      summary: 'Retrieve a campaign'
+      operationId: retrieveACampaign
+      description: 'Retrieves a Campaign object.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 9
+                  name: 'Stefanie Lebsack'
+                  scheduled_at: '2025-10-23T01:36:18.000000Z'
+                  timezone: Asia/Atyrau
+                  recurring: false
+                  frequency: null
+                  frequency_unit: null
+                  ends_at: null
+                  repeat_at: null
+                  active_hours: '00:00-23:59'
+                  days_of_week:
+                    - 1
+                    - 2
+                    - 5
+                    - 6
+                  status: Processed
+                  type: SMS
+                  options:
+                    delay: '57'
+                    prioritize: false
+                    delivery_report: true
+                  created_at: '2025-09-08T05:42:25.000000Z'
+                  updated_at: '2025-09-08T05:42:25.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 9
+                    description: 'The ID of the campaign.'
+                    enum: []
+                  name:
+                    type: string
+                    example: 'Stefanie Lebsack'
+                    description: 'The name of the campaign.'
+                    enum: []
+                  scheduled_at:
+                    type: string
+                    example: '2025-10-23T01:36:18.000000Z'
+                    description: 'The date and time when the campaign is scheduled to run.'
+                    enum: []
+                  timezone:
+                    type: string
+                    example: Asia/Atyrau
+                    description: 'The timezone of the campaign.'
+                    enum: []
+                  recurring:
+                    type: boolean
+                    example: false
+                    description: 'Whether the campaign is recurring.'
+                    enum: []
+                  frequency:
+                    type: string
+                    example: null
+                    description: 'The frequency of the campaign.'
+                    enum: []
+                  frequency_unit:
+                    type: string
+                    example: null
+                    description: 'The unit of the frequency.'
+                    enum: []
+                  ends_at:
+                    type: string
+                    example: null
+                    description: 'The date and time when the recurring campaign ends.'
+                    enum: []
+                  repeat_at:
+                    type: string
+                    example: null
+                    description: 'The date and time when the campaign is scheduled to repeat.'
+                    enum: []
+                  active_hours:
+                    type: string
+                    example: '00:00-23:59'
+                    description: 'The timespan of a day when the campaign is active.'
+                    enum: []
+                  days_of_week:
+                    type: array
+                    example:
+                      - 1
+                      - 2
+                      - 5
+                      - 6
+                    description: 'The days of the week when the campaign is active.'
+                    enum: []
+                    items:
+                      type: integer
+                  status:
+                    type: string
+                    example: Processed
+                    description: 'The status of the campaign.'
+                    enum: []
+                  type:
+                    type: string
+                    example: SMS
+                    description: 'The type of the campaign.'
+                    enum: []
+                  options:
+                    type: object
+                    properties:
+                      delay:
+                        type: string
+                        example: '57'
+                        description: 'The delay between each item before sending the next one.'
+                        enum: []
+                      prioritize:
+                        type: boolean
+                        example: false
+                        description: 'Whether to prioritize the campaign.'
+                        enum: []
+                      delivery_report:
+                        type: boolean
+                        example: true
+                        description: 'Whether to request delivery report for SMS.'
+                        enum: []
+                    description: 'The options of the campaign.'
+                  created_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time the campaign was created.'
+                    enum: []
+                  updated_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time the campaign was last updated.'
+                    enum: []
+                required:
+                  - id
+                  - name
+                  - scheduled_at
+                  - timezone
+                  - recurring
+                  - frequency
+                  - frequency_unit
+                  - ends_at
+                  - repeat_at
+                  - active_hours
+                  - days_of_week
+                  - status
+                  - type
+                  - options
+                  - created_at
+                  - updated_at
+      tags:
+        - Campaigns
+    put:
+      summary: 'Update a campaign'
+      operationId: updateACampaign
+      description: 'Updates the specific campaign by setting the values of the parameters passed.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - Campaigns
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the campaign. Must be at least 3 characters.'
+                  example: 'New Campaign'
+                  nullable: false
+              required:
+                - name
+    delete:
+      summary: 'Delete a campaign'
+      operationId: deleteACampaign
+      description: 'Permanently deletes a campaign. Also deletes all messages or USSD pulls associated with it. It cannot be undone.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - Campaigns
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the campaign.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/campaigns/{campaign_id}/devices':
+    get:
+      summary: 'List all devices used in a campaign'
+      operationId: listAllDevicesUsedInACampaign
+      description: 'Returns a list of devices used in a campaign. The devices are returned with sims used in the campaign and status of the campaign on the device.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 11
+                      name: null
+                      model: 'Nokia X20'
+                      android_version: '7'
+                      app_version: 0.20.34
+                      battery: 46
+                      is_charging: false
+                      enabled: true
+                      sims:
+                        -
+                          id: 15
+                          name: 'Koelpin, Nolan and Bailey'
+                          label: null
+                          number: '+15202822732'
+                          country: SZ
+                          carrier: 'Miller Ltd'
+                          slot: 0
+                          data_roaming: false
+                          signal_strength: 4
+                          active: true
+                    -
+                      id: 12
+                      name: null
+                      model: 'Xiaomi Mi 11'
+                      android_version: '9'
+                      app_version: 3.73.98
+                      battery: 71
+                      is_charging: false
+                      enabled: true
+                      sims:
+                        -
+                          id: 16
+                          name: 'Hermiston, Parker and Marvin'
+                          label: null
+                          number: '+13648507362'
+                          country: GE
+                          carrier: 'Littel Ltd'
+                          slot: 0
+                          data_roaming: false
+                          signal_strength: 4
+                          active: true
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 10
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 11
+                        name: null
+                        model: 'Nokia X20'
+                        android_version: '7'
+                        app_version: 0.20.34
+                        battery: 46
+                        is_charging: false
+                        enabled: true
+                        sims:
+                          -
+                            id: 15
+                            name: 'Koelpin, Nolan and Bailey'
+                            label: null
+                            number: '+15202822732'
+                            country: SZ
+                            carrier: 'Miller Ltd'
+                            slot: 0
+                            data_roaming: false
+                            signal_strength: 4
+                            active: true
+                      -
+                        id: 12
+                        name: null
+                        model: 'Xiaomi Mi 11'
+                        android_version: '9'
+                        app_version: 3.73.98
+                        battery: 71
+                        is_charging: false
+                        enabled: true
+                        sims:
+                          -
+                            id: 16
+                            name: 'Hermiston, Parker and Marvin'
+                            label: null
+                            number: '+13648507362'
+                            country: GE
+                            carrier: 'Littel Ltd'
+                            slot: 0
+                            data_roaming: false
+                            signal_strength: 4
+                            active: true
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 11
+                        name:
+                          type: string
+                          example: null
+                        model:
+                          type: string
+                          example: 'Nokia X20'
+                        android_version:
+                          type: string
+                          example: '7'
+                        app_version:
+                          type: string
+                          example: 0.20.34
+                        battery:
+                          type: integer
+                          example: 46
+                        is_charging:
+                          type: boolean
+                          example: false
+                        enabled:
+                          type: boolean
+                          example: true
+                        sims:
+                          type: array
+                          example:
+                            -
+                              id: 15
+                              name: 'Koelpin, Nolan and Bailey'
+                              label: null
+                              number: '+15202822732'
+                              country: SZ
+                              carrier: 'Miller Ltd'
+                              slot: 0
+                              data_roaming: false
+                              signal_strength: 4
+                              active: true
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 15
+                              name:
+                                type: string
+                                example: 'Koelpin, Nolan and Bailey'
+                              label:
+                                type: string
+                                example: null
+                              number:
+                                type: string
+                                example: '+15202822732'
+                              country:
+                                type: string
+                                example: SZ
+                              carrier:
+                                type: string
+                                example: 'Miller Ltd'
+                              slot:
+                                type: integer
+                                example: 0
+                              data_roaming:
+                                type: boolean
+                                example: false
+                              signal_strength:
+                                type: integer
+                                example: 4
+                              active:
+                                type: boolean
+                                example: true
+                          required:
+                            - id
+                            - name
+                    required:
+                      - id
+                      - name
+                      - model
+                      - android_version
+                      - app_version
+                      - battery
+                      - is_charging
+                      - enabled
+                      - sims
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 10
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - Campaigns
+    parameters:
+      -
+        in: path
+        name: campaign_id
+        description: 'The ID of the campaign.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/campaigns/{campaign_id}/sending-servers':
+    get:
+      summary: 'List all sending servers used in a campaign'
+      operationId: listAllSendingServersUsedInACampaign
+      description: 'Returns a list of sending servers used in a campaign. The sending servers are returned with sender ids used in the campaign and status of the campaign on the sending server.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 3
+                      name: 'Gideon Boyer'
+                      enabled: true
+                      sender_ids:
+                        -
+                          id: 21
+                          value: '942561'
+                    -
+                      id: 4
+                      name: "Bridgette D'Amore"
+                      enabled: true
+                      sender_ids:
+                        -
+                          id: 22
+                          value: '597151'
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 10
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 3
+                        name: 'Gideon Boyer'
+                        enabled: true
+                        sender_ids:
+                          -
+                            id: 21
+                            value: '942561'
+                      -
+                        id: 4
+                        name: "Bridgette D'Amore"
+                        enabled: true
+                        sender_ids:
+                          -
+                            id: 22
+                            value: '597151'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 3
+                        name:
+                          type: string
+                          example: 'Gideon Boyer'
+                        enabled:
+                          type: boolean
+                          example: true
+                        sender_ids:
+                          type: array
+                          example:
+                            -
+                              id: 21
+                              value: '942561'
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 21
+                              value:
+                                type: string
+                                example: '942561'
+                          required:
+                            - id
+                    required:
+                      - id
+                      - name
+                      - sender_ids
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 10
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - Campaigns
+    parameters:
+      -
+        in: path
+        name: campaign_id
+        description: 'The ID of the campaign.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/contact-lists:
+    get:
+      summary: 'List all contact lists'
+      operationId: listAllContactLists
+      description: 'Returns a list of contact lists. The contact lists are returned sorted by creation date, with the most recently created contact list appearing first.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 11
+                      name: deborah.mayert
+                    -
+                      id: 12
+                      name: kuhn.jaclyn
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 10
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 11
+                        name: deborah.mayert
+                      -
+                        id: 12
+                        name: kuhn.jaclyn
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 11
+                        name:
+                          type: string
+                          example: deborah.mayert
+                    required:
+                      - id
+                      - name
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 10
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - 'Contact Lists'
+    post:
+      summary: 'Create a contact list'
+      operationId: createAContactList
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 14
+                  name: brown.maggie
+                properties:
+                  id:
+                    type: integer
+                    example: 14
+                    description: 'The ID of the contact list.'
+                    enum: []
+                  name:
+                    type: string
+                    example: brown.maggie
+                    description: 'The name of the contact list.'
+                    enum: []
+                required:
+                  - id
+                  - name
+      tags:
+        - 'Contact Lists'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the contact list. Must be unique. Must be at least 3 characters.'
+                  example: 'My List'
+                  nullable: false
+              required:
+                - name
+  '/api/v1/contact-lists/{id}':
+    get:
+      summary: 'Retrieve a contact list'
+      operationId: retrieveAContactList
+      description: 'Retrieves a Contact List object.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 13
+                  name: deborah.mayert
+                properties:
+                  id:
+                    type: integer
+                    example: 13
+                    description: 'The ID of the contact list.'
+                    enum: []
+                  name:
+                    type: string
+                    example: deborah.mayert
+                    description: 'The name of the contact list.'
+                    enum: []
+                required:
+                  - id
+                  - name
+      tags:
+        - 'Contact Lists'
+    put:
+      summary: 'Update a contact list'
+      operationId: updateAContactList
+      description: 'Updates the specific contact list by setting the values of the parameters passed.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - 'Contact Lists'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the contact list. Must be unique. Must be at least 3 characters.'
+                  example: 'My List'
+                  nullable: false
+              required:
+                - name
+    delete:
+      summary: 'Delete a contact list'
+      operationId: deleteAContactList
+      description: 'Permanently deletes the specific contact list. Also deletes all contacts and fields associated with it. It cannot be undone.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - 'Contact Lists'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the contact list.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/contact-lists/{contact_list_id}/fields':
+    get:
+      summary: 'List all fields for a contact list'
+      operationId: listAllFieldsForAContactList
+      description: 'Returns a list of fields for a contact list. The fields are returned sorted by creation date, with the most recently created field appearing first.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 21
+                      label: Itaque
+                      tag: itaque
+                      type: email
+                      options: null
+                      default_value: non
+                      required: true
+                    -
+                      id: 22
+                      label: Sed
+                      tag: sed
+                      type: multiselect
+                      options:
+                        -
+                          label: quasi
+                          value: commodi
+                        -
+                          label: tempore
+                          value: in
+                        -
+                          label: qui
+                          value: hic
+                        -
+                          label: sequi
+                          value: corrupti
+                        -
+                          label: et
+                          value: enim
+                      default_value:
+                        - in
+                      required: true
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 50
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 21
+                        label: Itaque
+                        tag: itaque
+                        type: email
+                        options: null
+                        default_value: non
+                        required: true
+                      -
+                        id: 22
+                        label: Sed
+                        tag: sed
+                        type: multiselect
+                        options:
+                          -
+                            label: quasi
+                            value: commodi
+                          -
+                            label: tempore
+                            value: in
+                          -
+                            label: qui
+                            value: hic
+                          -
+                            label: sequi
+                            value: corrupti
+                          -
+                            label: et
+                            value: enim
+                        default_value:
+                          - in
+                        required: true
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 21
+                        label:
+                          type: string
+                          example: Itaque
+                        tag:
+                          type: string
+                          example: itaque
+                        type:
+                          type: string
+                          example: email
+                        options:
+                          type: string
+                          example: null
+                        default_value:
+                          type: string
+                          example: non
+                        required:
+                          type: boolean
+                          example: true
+                    required:
+                      - id
+                      - label
+                      - tag
+                      - type
+                      - options
+                      - default_value
+                      - required
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                        required:
+                          - label
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 50
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - 'Contact Lists'
+    post:
+      summary: 'Create a field for a contact list'
+      operationId: createAFieldForAContactList
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 24
+                  label: Est
+                  tag: est
+                  type: dropdown
+                  options:
+                    -
+                      label: repellat
+                      value: ut
+                    -
+                      label: est
+                      value: accusantium
+                    -
+                      label: eaque
+                      value: unde
+                    -
+                      label: enim
+                      value: id
+                    -
+                      label: id
+                      value: dolorem
+                  default_value: null
+                  required: false
+                properties:
+                  id:
+                    type: integer
+                    example: 24
+                    description: 'The ID of the field.'
+                    enum: []
+                  label:
+                    type: string
+                    example: Est
+                    description: 'The label of the field.'
+                    enum: []
+                  tag:
+                    type: string
+                    example: est
+                    description: 'The tag of the field.'
+                    enum: []
+                  type:
+                    type: string
+                    example: dropdown
+                    description: 'The type of the field.'
+                    enum:
+                      - text
+                      - number
+                      - email
+                      - dropdown
+                      - multiselect
+                      - checkbox
+                      - radio
+                      - date
+                      - datetime-local
+                      - time
+                      - textarea
+                  options:
+                    type: array
+                    example:
+                      -
+                        label: repellat
+                        value: ut
+                      -
+                        label: est
+                        value: accusantium
+                      -
+                        label: eaque
+                        value: unde
+                      -
+                        label: enim
+                        value: id
+                      -
+                        label: id
+                        value: dolorem
+                    description: 'List of all possible options for the field.'
+                    enum: []
+                    items:
+                      type: object
+                      properties:
+                        label:
+                          type: string
+                          example: repellat
+                        value:
+                          type: string
+                          example: ut
+                    required:
+                      - label
+                  default_value:
+                    type: string
+                    example: null
+                    description: 'The default value of the field.'
+                    enum: []
+                  required:
+                    type: boolean
+                    example: false
+                    description: 'Whether the field is required or not.'
+                    enum: []
+                required:
+                  - id
+                  - label
+                  - tag
+                  - type
+                  - options
+                  - default_value
+                  - required
+      tags:
+        - 'Contact Lists'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                  description: 'The label of the field. Must be at least 3 characters. Must not be greater than 50 characters.'
+                  example: 'First Name'
+                  nullable: false
+                tag:
+                  type: string
+                  description: 'The tag of the field. Must contain only letters, numbers, dashes and underscores. Must not be one of <code>mobile_number</code> or <code>subscribed</code> Must be at least 3 characters. Must not be greater than 50 characters.'
+                  example: first_name
+                  nullable: false
+                type:
+                  type: string
+                  description: 'The type of the field.'
+                  example: text
+                  nullable: false
+                  enum:
+                    - text
+                    - number
+                    - email
+                    - dropdown
+                    - multiselect
+                    - checkbox
+                    - radio
+                    - date
+                    - datetime-local
+                    - time
+                    - textarea
+                options:
+                  type: array
+                  description: 'List of all possible options for the field. This field is required when <code>type</code> is <code>checkbox</code>, <code>dropdown</code>, <code>multiselect</code>, or <code>radio</code>.'
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      label:
+                        type: string
+                        description: 'The label of the option. Must be at least 3 characters.'
+                        example: 'Option 1'
+                        nullable: false
+                      value:
+                        type: string
+                        description: 'The value of the option. Must contain only letters, numbers, dashes and underscores.'
+                        example: option_1
+                        nullable: false
+                    required:
+                      - label
+                      - value
+                default_value:
+                  type: string
+                  description: 'The default value of the field.'
+                  example: John
+                  nullable: true
+                required:
+                  type: boolean
+                  description: 'Whether the field is required or not.'
+                  example: false
+                  nullable: false
+              required:
+                - label
+                - tag
+                - type
+                - required
+    parameters:
+      -
+        in: path
+        name: contact_list_id
+        description: 'The ID of the contact list.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/fields/{id}':
+    get:
+      summary: 'Retrieve a field'
+      operationId: retrieveAField
+      description: 'Retrieves a Field object.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 23
+                  label: Non
+                  tag: non
+                  type: email
+                  options: null
+                  default_value: aspernatur
+                  required: true
+                properties:
+                  id:
+                    type: integer
+                    example: 23
+                    description: 'The ID of the field.'
+                    enum: []
+                  label:
+                    type: string
+                    example: Non
+                    description: 'The label of the field.'
+                    enum: []
+                  tag:
+                    type: string
+                    example: non
+                    description: 'The tag of the field.'
+                    enum: []
+                  type:
+                    type: string
+                    example: email
+                    description: 'The type of the field.'
+                    enum:
+                      - text
+                      - number
+                      - email
+                      - dropdown
+                      - multiselect
+                      - checkbox
+                      - radio
+                      - date
+                      - datetime-local
+                      - time
+                      - textarea
+                  options:
+                    type: string
+                    example: null
+                    description: 'List of all possible options for the field.'
+                    enum: []
+                  default_value:
+                    type: string
+                    example: aspernatur
+                    description: 'The default value of the field.'
+                    enum: []
+                  required:
+                    type: boolean
+                    example: true
+                    description: 'Whether the field is required or not.'
+                    enum: []
+                required:
+                  - id
+                  - label
+                  - tag
+                  - type
+                  - options
+                  - default_value
+                  - required
+      tags:
+        - 'Contact Lists'
+    put:
+      summary: 'Update a field'
+      operationId: updateAField
+      description: "Updates the specific field by setting the values of the parameters passed. It is recommended to retrieve the field first to get the field's current state because partial updates are not supported."
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - 'Contact Lists'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label:
+                  type: string
+                  description: 'The label of the field. Must be at least 3 characters. Must not be greater than 50 characters.'
+                  example: 'First Name'
+                  nullable: false
+                tag:
+                  type: string
+                  description: 'The tag of the field. Must contain only letters, numbers, dashes and underscores. Must not be one of <code>mobile_number</code> or <code>subscribed</code> Must be at least 3 characters. Must not be greater than 50 characters.'
+                  example: first_name
+                  nullable: false
+                type:
+                  type: string
+                  description: 'The type of the field.'
+                  example: text
+                  nullable: false
+                  enum:
+                    - text
+                    - number
+                    - email
+                    - dropdown
+                    - multiselect
+                    - checkbox
+                    - radio
+                    - date
+                    - datetime-local
+                    - time
+                    - textarea
+                options:
+                  type: array
+                  description: 'List of all possible options for the field. This field is required when <code>type</code> is <code>checkbox</code>, <code>dropdown</code>, <code>multiselect</code>, or <code>radio</code>.'
+                  example: null
+                  items:
+                    type: object
+                    properties:
+                      label:
+                        type: string
+                        description: 'The label of the option. Must be at least 3 characters.'
+                        example: 'Option 1'
+                        nullable: false
+                      value:
+                        type: string
+                        description: 'The value of the option. Must contain only letters, numbers, dashes and underscores.'
+                        example: option_1
+                        nullable: false
+                    required:
+                      - label
+                      - value
+                default_value:
+                  type: string
+                  description: 'The default value of the field.'
+                  example: John
+                  nullable: true
+                required:
+                  type: boolean
+                  description: 'Whether the field is required or not.'
+                  example: false
+                  nullable: false
+              required:
+                - label
+                - tag
+                - type
+                - required
+    delete:
+      summary: 'Delete a field'
+      operationId: deleteAField
+      description: 'Permanently deletes a field. Also deletes all associated field values of contacts. It cannot be undone.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - 'Contact Lists'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the field.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/contact-lists/{contact_list_id}/contacts':
+    get:
+      summary: 'List all contacts for a contact list'
+      operationId: listAllContactsForAContactList
+      description: 'Returns a list of contacts for a contact list. The contacts are returned sorted by creation date, with the most recently created contact appearing first.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 2001
+                      mobile_number: '+14329282957'
+                      subscribed: true
+                      created_at: '2025-09-08T05:42:25.000000Z'
+                      updated_at: '2025-09-08T05:42:25.000000Z'
+                    -
+                      id: 2002
+                      mobile_number: '+18058165575'
+                      subscribed: false
+                      created_at: '2025-09-08T05:42:25.000000Z'
+                      updated_at: '2025-09-08T05:42:25.000000Z'
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 100
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 2001
+                        mobile_number: '+14329282957'
+                        subscribed: true
+                        created_at: '2025-09-08T05:42:25.000000Z'
+                        updated_at: '2025-09-08T05:42:25.000000Z'
+                      -
+                        id: 2002
+                        mobile_number: '+18058165575'
+                        subscribed: false
+                        created_at: '2025-09-08T05:42:25.000000Z'
+                        updated_at: '2025-09-08T05:42:25.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 2001
+                        mobile_number:
+                          type: string
+                          example: '+14329282957'
+                        subscribed:
+                          type: boolean
+                          example: true
+                        created_at:
+                          type: string
+                          example: '2025-09-08T05:42:25.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2025-09-08T05:42:25.000000Z'
+                    required:
+                      - id
+                      - mobile_number
+                      - subscribed
+                      - created_at
+                      - updated_at
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 100
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - Contacts
+    post:
+      summary: 'Create a contact in a contact list'
+      operationId: createAContactInAContactList
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 2004
+                  mobile_number: '+19475350806'
+                  subscribed: true
+                  created_at: '2025-09-08T05:42:25.000000Z'
+                  updated_at: '2025-09-08T05:42:25.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 2004
+                    description: 'The ID of the contact.'
+                    enum: []
+                  mobile_number:
+                    type: string
+                    example: '+19475350806'
+                    description: 'The mobile number of the contact.'
+                    enum: []
+                  subscribed:
+                    type: boolean
+                    example: true
+                    description: 'Whether the contact is subscribed or not.'
+                    enum: []
+                  created_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time when the contact was created.'
+                    enum: []
+                  updated_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time when the contact was last updated.'
+                    enum: []
+                required:
+                  - id
+                  - mobile_number
+                  - subscribed
+                  - created_at
+                  - updated_at
+      tags:
+        - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mobile_number:
+                  type: string
+                  description: 'The mobile number of the contact.'
+                  example: '+12025886500'
+                  nullable: false
+                subscribed:
+                  type: boolean
+                  description: 'Whether the contact is subscribed to the contact list.'
+                  example: false
+                  nullable: false
+                first_name:
+                  type: string
+                  description: "The first name of the contact. This is a custom field so if you didn't set it up, it won't be available."
+                  example: John
+                  nullable: false
+                last_name:
+                  type: string
+                  description: "The last name of the contact. This is a custom field so if you didn't set it up, it won't be available."
+                  example: Doe
+                  nullable: true
+              required:
+                - mobile_number
+                - subscribed
+                - first_name
+    parameters:
+      -
+        in: path
+        name: contact_list_id
+        description: 'The ID of the contact list.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/contacts/{id}':
+    get:
+      summary: 'Retrieve a contact'
+      operationId: retrieveAContact
+      description: 'Retrieves a Contact object.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 2003
+                  mobile_number: '+19475350806'
+                  subscribed: true
+                  created_at: '2025-09-08T05:42:25.000000Z'
+                  updated_at: '2025-09-08T05:42:25.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 2003
+                    description: 'The ID of the contact.'
+                    enum: []
+                  mobile_number:
+                    type: string
+                    example: '+19475350806'
+                    description: 'The mobile number of the contact.'
+                    enum: []
+                  subscribed:
+                    type: boolean
+                    example: true
+                    description: 'Whether the contact is subscribed or not.'
+                    enum: []
+                  created_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time when the contact was created.'
+                    enum: []
+                  updated_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time when the contact was last updated.'
+                    enum: []
+                required:
+                  - id
+                  - mobile_number
+                  - subscribed
+                  - created_at
+                  - updated_at
+      tags:
+        - Contacts
+    put:
+      summary: 'Update a contact'
+      operationId: updateAContact
+      description: "Update a contact in a contact list with the given data. It is recommended to retrieve the contact first to get the contact's current state because partial updates are not supported."
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - Contacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mobile_number:
+                  type: string
+                  description: 'The mobile number of the contact.'
+                  example: '+12025886500'
+                  nullable: false
+                subscribed:
+                  type: boolean
+                  description: 'Whether the contact is subscribed to the contact list.'
+                  example: false
+                  nullable: false
+                first_name:
+                  type: string
+                  description: "The first name of the contact. This is a custom field so if you didn't set it up, it won't be available."
+                  example: John
+                  nullable: false
+                last_name:
+                  type: string
+                  description: "The last name of the contact. This is a custom field so if you didn't set it up, it won't be available."
+                  example: Doe
+                  nullable: true
+              required:
+                - mobile_number
+                - subscribed
+                - first_name
+    delete:
+      summary: 'Delete a contact'
+      operationId: deleteAContact
+      description: 'Permanently deletes a contact. It cannot be undone.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - Contacts
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the contact.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/devices:
+    get:
+      summary: 'List all devices'
+      operationId: listAllDevices
+      description: 'Returns a list of devices. The devices are returned sorted by creation date, with the most recently created device appearing first.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 13
+                      name: null
+                      model: 'Nokia X20'
+                      enabled: true
+                      android_version: '7'
+                      app_version: 0.20.34
+                      battery: 46
+                      is_charging: false
+                      updated_at: '2025-09-08T05:42:25.000000Z'
+                      sims:
+                        -
+                          id: 17
+                          name: 'Nitzsche, Rogahn and Jakubowski'
+                          label: null
+                          number: '+16284319281'
+                          country: IL
+                          carrier: 'Gerhold, Walter and Schinner'
+                          slot: 0
+                          data_roaming: false
+                          signal_strength: 4
+                          active: true
+                    -
+                      id: 14
+                      name: null
+                      model: 'OnePlus Nord 2 5G'
+                      enabled: true
+                      android_version: '11'
+                      app_version: 3.40.82
+                      battery: 0
+                      is_charging: true
+                      updated_at: '2025-09-08T05:42:25.000000Z'
+                      sims:
+                        -
+                          id: 18
+                          name: 'Langosh, Waters and Wolf'
+                          label: null
+                          number: '+13108318149'
+                          country: BW
+                          carrier: 'Boehm LLC'
+                          slot: 0
+                          data_roaming: true
+                          signal_strength: 2
+                          active: true
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 100
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 13
+                        name: null
+                        model: 'Nokia X20'
+                        enabled: true
+                        android_version: '7'
+                        app_version: 0.20.34
+                        battery: 46
+                        is_charging: false
+                        updated_at: '2025-09-08T05:42:25.000000Z'
+                        sims:
+                          -
+                            id: 17
+                            name: 'Nitzsche, Rogahn and Jakubowski'
+                            label: null
+                            number: '+16284319281'
+                            country: IL
+                            carrier: 'Gerhold, Walter and Schinner'
+                            slot: 0
+                            data_roaming: false
+                            signal_strength: 4
+                            active: true
+                      -
+                        id: 14
+                        name: null
+                        model: 'OnePlus Nord 2 5G'
+                        enabled: true
+                        android_version: '11'
+                        app_version: 3.40.82
+                        battery: 0
+                        is_charging: true
+                        updated_at: '2025-09-08T05:42:25.000000Z'
+                        sims:
+                          -
+                            id: 18
+                            name: 'Langosh, Waters and Wolf'
+                            label: null
+                            number: '+13108318149'
+                            country: BW
+                            carrier: 'Boehm LLC'
+                            slot: 0
+                            data_roaming: true
+                            signal_strength: 2
+                            active: true
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 13
+                        name:
+                          type: string
+                          example: null
+                        model:
+                          type: string
+                          example: 'Nokia X20'
+                        enabled:
+                          type: boolean
+                          example: true
+                        android_version:
+                          type: string
+                          example: '7'
+                        app_version:
+                          type: string
+                          example: 0.20.34
+                        battery:
+                          type: integer
+                          example: 46
+                        is_charging:
+                          type: boolean
+                          example: false
+                        updated_at:
+                          type: string
+                          example: '2025-09-08T05:42:25.000000Z'
+                        sims:
+                          type: array
+                          example:
+                            -
+                              id: 17
+                              name: 'Nitzsche, Rogahn and Jakubowski'
+                              label: null
+                              number: '+16284319281'
+                              country: IL
+                              carrier: 'Gerhold, Walter and Schinner'
+                              slot: 0
+                              data_roaming: false
+                              signal_strength: 4
+                              active: true
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: integer
+                                example: 17
+                              name:
+                                type: string
+                                example: 'Nitzsche, Rogahn and Jakubowski'
+                              label:
+                                type: string
+                                example: null
+                              number:
+                                type: string
+                                example: '+16284319281'
+                              country:
+                                type: string
+                                example: IL
+                              carrier:
+                                type: string
+                                example: 'Gerhold, Walter and Schinner'
+                              slot:
+                                type: integer
+                                example: 0
+                              data_roaming:
+                                type: boolean
+                                example: false
+                              signal_strength:
+                                type: integer
+                                example: 4
+                              active:
+                                type: boolean
+                                example: true
+                          required:
+                            - id
+                            - name
+                    required:
+                      - id
+                      - name
+                      - model
+                      - enabled
+                      - android_version
+                      - app_version
+                      - battery
+                      - is_charging
+                      - updated_at
+                      - sims
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 100
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - Devices
+  '/api/v1/devices/{id}':
+    get:
+      summary: 'Retrieve a device'
+      operationId: retrieveADevice
+      description: 'Retrieves a Device object.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 15
+                  name: null
+                  model: 'Nokia X20'
+                  enabled: true
+                  android_version: '7'
+                  app_version: 0.20.34
+                  battery: 46
+                  is_charging: false
+                  updated_at: '2025-09-08T05:42:25.000000Z'
+                  sims:
+                    -
+                      id: 19
+                      name: 'Carter, Zieme and Oberbrunner'
+                      label: null
+                      number: '+16819707512'
+                      country: KM
+                      carrier: Kassulke-Ankunding
+                      slot: 0
+                      data_roaming: true
+                      signal_strength: 3
+                      active: true
+                properties:
+                  id:
+                    type: integer
+                    example: 15
+                    description: 'The ID of the device.'
+                    enum: []
+                  name:
+                    type: string
+                    example: null
+                    description: 'The name of the device.'
+                    enum: []
+                  model:
+                    type: string
+                    example: 'Nokia X20'
+                    description: 'The model of the device.'
+                    enum: []
+                  enabled:
+                    type: boolean
+                    example: true
+                    description: 'Whether the user has logged in to the app on the device.'
+                    enum: []
+                  android_version:
+                    type: string
+                    example: '7'
+                    description: 'The android version of the device.'
+                    enum: []
+                  app_version:
+                    type: string
+                    example: 0.20.34
+                    description: 'The app version installed on the device.'
+                    enum: []
+                  battery:
+                    type: integer
+                    example: 46
+                    description: 'The percentage of battery remaining on the device.'
+                    enum: []
+                  is_charging:
+                    type: boolean
+                    example: false
+                    description: 'Whether the device is charging or not.'
+                    enum: []
+                  updated_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The last time the device was updated.'
+                    enum: []
+                  sims:
+                    type: array
+                    example:
+                      -
+                        id: 19
+                        name: 'Carter, Zieme and Oberbrunner'
+                        label: null
+                        number: '+16819707512'
+                        country: KM
+                        carrier: Kassulke-Ankunding
+                        slot: 0
+                        data_roaming: true
+                        signal_strength: 3
+                        active: true
+                    description: 'List of all sims on the device.'
+                    enum: []
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 19
+                        name:
+                          type: string
+                          example: 'Carter, Zieme and Oberbrunner'
+                        label:
+                          type: string
+                          example: null
+                        number:
+                          type: string
+                          example: '+16819707512'
+                        country:
+                          type: string
+                          example: KM
+                        carrier:
+                          type: string
+                          example: Kassulke-Ankunding
+                        slot:
+                          type: integer
+                          example: 0
+                        data_roaming:
+                          type: boolean
+                          example: true
+                        signal_strength:
+                          type: integer
+                          example: 3
+                        active:
+                          type: boolean
+                          example: true
+                    required:
+                      - id
+                      - name
+                required:
+                  - id
+                  - name
+                  - model
+                  - enabled
+                  - android_version
+                  - app_version
+                  - battery
+                  - is_charging
+                  - updated_at
+                  - sims
+      tags:
+        - Devices
+    put:
+      summary: 'Update a device'
+      operationId: updateADevice
+      description: 'Update the specific device by setting the values of the parameters passed.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - Devices
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the device. Must be at least 3 characters. Must not be greater than 255 characters.'
+                  example: 'My Device'
+                  nullable: true
+    delete:
+      summary: 'Delete a device'
+      operationId: deleteADevice
+      description: 'Permanently deletes a device. Also removes the SIMs associated with the device and any messages, USSD Pulls and call logs associated with those SIMs. It cannot be undone.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - Devices
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the device.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/messages/send:
+    get:
+      summary: 'Send messages'
+      operationId: sendMessages
+      description: 'Send an SMS or MMS campaign.'
+      parameters: []
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 10
+                  name: 'Blaise Pouros'
+                  scheduled_at: '2025-12-16T20:37:14.000000Z'
+                  timezone: America/Indiana/Knox
+                  recurring: true
+                  frequency: 5
+                  frequency_unit: Minute
+                  ends_at: '2026-09-05T09:37:44.000000Z'
+                  repeat_at: null
+                  active_hours: '09:00-17:00'
+                  days_of_week:
+                    - 1
+                    - 3
+                    - 5
+                    - 7
+                  status: Processed
+                  type: MMS
+                  options:
+                    delay: '34'
+                    prioritize: true
+                  created_at: '2025-09-08T05:42:25.000000Z'
+                  updated_at: '2025-09-08T05:42:25.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 10
+                    description: 'The ID of the campaign.'
+                    enum: []
+                  name:
+                    type: string
+                    example: 'Blaise Pouros'
+                    description: 'The name of the campaign.'
+                    enum: []
+                  scheduled_at:
+                    type: string
+                    example: '2025-12-16T20:37:14.000000Z'
+                    description: 'The date and time when the campaign is scheduled to run.'
+                    enum: []
+                  timezone:
+                    type: string
+                    example: America/Indiana/Knox
+                    description: 'The timezone of the campaign.'
+                    enum: []
+                  recurring:
+                    type: boolean
+                    example: true
+                    description: 'Whether the campaign is recurring.'
+                    enum: []
+                  frequency:
+                    type: integer
+                    example: 5
+                    description: 'The frequency of the campaign.'
+                    enum: []
+                  frequency_unit:
+                    type: string
+                    example: Minute
+                    description: 'The unit of the frequency.'
+                    enum: []
+                  ends_at:
+                    type: string
+                    example: '2026-09-05T09:37:44.000000Z'
+                    description: 'The date and time when the recurring campaign ends.'
+                    enum: []
+                  repeat_at:
+                    type: string
+                    example: null
+                    description: 'The date and time when the campaign is scheduled to repeat.'
+                    enum: []
+                  active_hours:
+                    type: string
+                    example: '09:00-17:00'
+                    description: 'The timespan of a day when the campaign is active.'
+                    enum: []
+                  days_of_week:
+                    type: array
+                    example:
+                      - 1
+                      - 3
+                      - 5
+                      - 7
+                    description: 'The days of the week when the campaign is active.'
+                    enum: []
+                    items:
+                      type: integer
+                  status:
+                    type: string
+                    example: Processed
+                    description: 'The status of the campaign.'
+                    enum: []
+                  type:
+                    type: string
+                    example: MMS
+                    description: 'The type of the campaign.'
+                    enum: []
+                  options:
+                    type: object
+                    properties:
+                      delay:
+                        type: string
+                        example: '34'
+                        description: 'The delay between each item before sending the next one.'
+                        enum: []
+                      prioritize:
+                        type: boolean
+                        example: true
+                        description: 'Whether to prioritize the campaign.'
+                        enum: []
+                    description: 'The options of the campaign.'
+                  created_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time the campaign was created.'
+                    enum: []
+                  updated_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time the campaign was last updated.'
+                    enum: []
+                required:
+                  - id
+                  - name
+                  - scheduled_at
+                  - timezone
+                  - recurring
+                  - frequency
+                  - frequency_unit
+                  - ends_at
+                  - repeat_at
+                  - active_hours
+                  - days_of_week
+                  - status
+                  - type
+                  - options
+                  - created_at
+                  - updated_at
+      tags:
+        - Messages
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sims:
+                  type: array
+                  description: 'The ids of the sims to use for sending the messages. You can also set the first element to * and it will use all available sims. This field is required when sender_ids is not present.'
+                  example:
+                    - 1
+                  items:
+                    type: integer
+                sender_ids:
+                  type: array
+                  description: 'The ids of the sender ids to use for sending the messages. You can also set the first element to * and it will use all available sender ids. This field is required when sims is not present.'
+                  example:
+                    - 1
+                  items:
+                    type: integer
+                random_sender:
+                  type: boolean
+                  description: 'Whether to use a random sim or sender id from selected sims or sender_ids for entire campaign.'
+                  example: false
+                  nullable: false
+                contact_lists:
+                  type: array
+                  description: 'The ids of the contact lists to send the messages. This field is required when mobile_numbers is not present. This field is prohibited when mobile_numbers is present.'
+                  example:
+                    - 1
+                  items:
+                    type: integer
+                mobile_numbers:
+                  type: array
+                  description: 'The mobile numbers to send the messages. This field is required when contact_lists is not present. This field is prohibited when contact_lists is present.'
+                  example:
+                    - '+12345678901'
+                  items:
+                    type: string
+                type:
+                  type: string
+                  description: 'The type of the message.'
+                  example: SMS
+                  nullable: false
+                  enum:
+                    - SMS
+                    - MMS
+                    - WhatsApp
+                message:
+                  type: string
+                  description: 'The message to send. This field is required when <code>type</code> is <code>SMS</code>. This field is required when <code>attachments</code> is not present. Must not be greater than 1600 characters.'
+                  example: 'Hello, World!'
+                  nullable: false
+                attachments:
+                  type: array
+                  description: 'The array of file URLs you want to send as attachments with the message. This field is prohibited when type is not MMS.'
+                  example:
+                    - 'https://example.com/image.jpg'
+                  items:
+                    type: string
+                delivery_report:
+                  type: boolean
+                  description: 'Whether to request a delivery report for the message. This field is prohibited when type is not SMS.'
+                  example: false
+                  nullable: false
+                delay:
+                  type: string
+                  description: 'The delay between messages in seconds. This field is prohibited when sims is not present.'
+                  example: 60
+                  nullable: false
+                prioritize:
+                  type: boolean
+                  description: 'Whether to prioritize the campaign. This field is prohibited when sims is not present.'
+                  example: false
+                  nullable: false
+                name:
+                  type: string
+                  description: 'The name of the campaign. Must not be greater than 255 characters.'
+                  example: 'My Campaign'
+                  nullable: false
+                scheduled_at:
+                  type: string
+                  description: 'The date and time the campaign is scheduled to run. Must be a valid date.'
+                  example: '2021-01-01T12:00:00Z'
+                  nullable: false
+                recurring:
+                  type: boolean
+                  description: 'Whether the campaign is recurring.'
+                  example: false
+                  nullable: false
+                frequency:
+                  type: integer
+                  description: 'The frequency of the campaign. This field is required when <code>recurring</code> is <code>true</code>. Must be at least 1.'
+                  example: 1
+                  nullable: false
+                frequency_unit:
+                  type: string
+                  description: 'The unit of the frequency. This field is required when <code>recurring</code> is <code>true</code>.'
+                  example: day
+                  nullable: false
+                  enum:
+                    - Minute
+                    - Hour
+                    - Day
+                    - Week
+                    - Month
+                    - Year
+                ends_at:
+                  type: string
+                  description: 'The date and time when the recurring campaign ends. Must be a valid date.'
+                  example: '2021-01-01T12:00:00Z'
+                  nullable: false
+                timezone:
+                  type: string
+                  description: 'The timezone of the campaign. This is used for scheduled_at, ends_at, days_of_week, and active_hours. This field is required when <code>active_hours</code>, <code>days_of_week</code>, <code>scheduled_at</code>, or <code>ends_at</code> is present. Must be a valid time zone, such as <code>Africa/Accra</code>.'
+                  example: UTC
+                  nullable: false
+                days_of_week:
+                  type: array
+                  description: 'The days of the week when the campaign is active.'
+                  example:
+                    - 1
+                  items:
+                    type: string
+                    enum:
+                      - '1'
+                      - '2'
+                      - '3'
+                      - '4'
+                      - '5'
+                      - '6'
+                      - '7'
+                active_hours:
+                  type: object
+                  description: 'Must contain 2 items.'
+                  example: null
+                  nullable: false
+                  properties:
+                    start:
+                      type: string
+                      description: 'The start time of the active hours. This field is required when <code>active_hours.end</code> is present. Must be a valid date in the format <code>H:i</code>. Must be a date before <code>active_hours.end</code>.'
+                      example: '08:00'
+                      nullable: false
+                    end:
+                      type: string
+                      description: 'The end time of the active hours. This field is required when <code>active_hours.start</code> is present. Must be a valid date in the format <code>H:i</code>. Must be a date after <code>active_hours.start</code>.'
+                      example: '17:00'
+                      nullable: false
+  /api/v1/messages:
+    get:
+      summary: 'List all messages'
+      operationId: listAllMessages
+      description: 'Returns a list of messages. The messages are returned sorted by sent date, with the most recently sent message appearing first.'
+      parameters:
+        -
+          in: query
+          name: user
+          description: 'Filter by user id. Only available for admin. Must be at least 1.'
+          example: 1.0
+          required: false
+          schema:
+            type: number
+            description: 'Filter by user id. Only available for admin. Must be at least 1.'
+            example: 1.0
+            nullable: true
+        -
+          in: query
+          name: campaign
+          description: 'Filter by campaign id. Must be at least 1.'
+          example: 1.0
+          required: false
+          schema:
+            type: number
+            description: 'Filter by campaign id. Must be at least 1.'
+            example: 1.0
+            nullable: true
+        -
+          in: query
+          name: sim
+          description: 'Filter by sim id. This field is prohibited if sender_id is present. Must be at least 1.'
+          example: 1.0
+          required: false
+          schema:
+            type: number
+            description: 'Filter by sim id. This field is prohibited if sender_id is present. Must be at least 1.'
+            example: 1.0
+            nullable: true
+        -
+          in: query
+          name: message
+          description: 'Filter by message. Must not be greater than 1600 characters.'
+          example: 'Hello, World!'
+          required: false
+          schema:
+            type: string
+            description: 'Filter by message. Must not be greater than 1600 characters.'
+            example: 'Hello, World!'
+            nullable: true
+        -
+          in: query
+          name: type
+          description: 'Filter by message type.'
+          example: SMS
+          required: false
+          schema:
+            type: string
+            description: 'Filter by message type.'
+            example: SMS
+            nullable: true
+            enum:
+              - SMS
+              - MMS
+              - WhatsApp
+        -
+          in: query
+          name: statuses
+          description: ''
+          example:
+            - Queued
+          required: false
+          schema:
+            type: array
+            description: ''
+            example:
+              - Queued
+            items:
+              type: string
+              enum:
+                - Pending
+                - Queued
+                - Processed
+                - Sent
+                - Delivered
+                - Failed
+                - Received
+        -
+          in: query
+          name: after
+          description: 'Filter by messages that are sent after this date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date before or equal to <code>before</code>.'
+          example: '2021-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Filter by messages that are sent after this date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date before or equal to <code>before</code>.'
+            example: '2021-01-01'
+            nullable: true
+        -
+          in: query
+          name: before
+          description: 'Filter by messages that are sent before this date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>after</code>.'
+          example: '2024-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Filter by messages that are sent before this date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>after</code>.'
+            example: '2024-01-01'
+            nullable: true
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 2061
+                      from: '+17345017250'
+                      to: '+19899609500'
+                      content: 'Itaque non aspernatur odio nam incidunt. Distinctio quam sed quasi commodi tempore.'
+                      type: SMS
+                      attachments: []
+                      status: Sent
+                      response: []
+                      messenger: 'Sim #20'
+                      sent_at: '2025-09-07T08:20:33.000000Z'
+                      delivered_at: '2025-09-08T05:42:25.000000Z'
+                    -
+                      id: 2062
+                      from: '+13309437084'
+                      to: '+14094483472'
+                      content: 'Porro aut tempora ut possimus odit. Sed rem ducimus est ut voluptatum porro repudiandae doloremque. In est id sed voluptatem.'
+                      type: WhatsApp
+                      attachments: []
+                      status: Queued
+                      response: []
+                      messenger: 'Sim #21'
+                      sent_at: '2025-09-07T15:42:10.000000Z'
+                      delivered_at: '2025-09-08T05:42:25.000000Z'
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 100
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 2061
+                        from: '+17345017250'
+                        to: '+19899609500'
+                        content: 'Itaque non aspernatur odio nam incidunt. Distinctio quam sed quasi commodi tempore.'
+                        type: SMS
+                        attachments: []
+                        status: Sent
+                        response: []
+                        messenger: 'Sim #20'
+                        sent_at: '2025-09-07T08:20:33.000000Z'
+                        delivered_at: '2025-09-08T05:42:25.000000Z'
+                      -
+                        id: 2062
+                        from: '+13309437084'
+                        to: '+14094483472'
+                        content: 'Porro aut tempora ut possimus odit. Sed rem ducimus est ut voluptatum porro repudiandae doloremque. In est id sed voluptatem.'
+                        type: WhatsApp
+                        attachments: []
+                        status: Queued
+                        response: []
+                        messenger: 'Sim #21'
+                        sent_at: '2025-09-07T15:42:10.000000Z'
+                        delivered_at: '2025-09-08T05:42:25.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 2061
+                        from:
+                          type: string
+                          example: '+17345017250'
+                        to:
+                          type: string
+                          example: '+19899609500'
+                        content:
+                          type: string
+                          example: 'Itaque non aspernatur odio nam incidunt. Distinctio quam sed quasi commodi tempore.'
+                        type:
+                          type: string
+                          example: SMS
+                        attachments:
+                          type: array
+                          example: []
+                        status:
+                          type: string
+                          example: Sent
+                        response:
+                          type: array
+                          example: []
+                        messenger:
+                          type: string
+                          example: 'Sim #20'
+                        sent_at:
+                          type: string
+                          example: '2025-09-07T08:20:33.000000Z'
+                        delivered_at:
+                          type: string
+                          example: '2025-09-08T05:42:25.000000Z'
+                    required:
+                      - id
+                      - from
+                      - to
+                      - content
+                      - type
+                      - attachments
+                      - status
+                      - response
+                      - messenger
+                      - sent_at
+                      - delivered_at
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 100
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+                    required:
+                      - from
+                      - to
+      tags:
+        - Messages
+  '/api/v1/messages/{id}':
+    get:
+      summary: 'Retrieve a message'
+      operationId: retrieveAMessage
+      description: 'Retrieves a Message object.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 2063
+                  from: '+15045565946'
+                  to: '+14322823398'
+                  content: 'Eveniet et quasi qui corporis quae sequi. Est rerum quam recusandae omnis dolore. Perferendis et et amet earum illum qui.'
+                  type: WhatsApp
+                  attachments: []
+                  status: Sent
+                  response: []
+                  messenger: 'Sim #22'
+                  sent_at: '2025-09-08T00:09:04.000000Z'
+                  delivered_at: '2025-09-08T05:42:25.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 2063
+                    description: 'The ID of the message.'
+                    enum: []
+                  from:
+                    type: string
+                    example: '+15045565946'
+                    description: 'The sender of the message.'
+                    enum: []
+                  to:
+                    type: string
+                    example: '+14322823398'
+                    description: 'The recipient of the message.'
+                    enum: []
+                  content:
+                    type: string
+                    example: 'Eveniet et quasi qui corporis quae sequi. Est rerum quam recusandae omnis dolore. Perferendis et et amet earum illum qui.'
+                    description: 'The content of the message.'
+                    enum: []
+                  type:
+                    type: string
+                    example: WhatsApp
+                    description: 'The type of the message.'
+                    enum: []
+                  attachments:
+                    type: array
+                    example: []
+                    description: 'List of all attachments for the message.'
+                    enum: []
+                  status:
+                    type: string
+                    example: Sent
+                    description: 'The status of the message.'
+                    enum:
+                      - Pending
+                      - Queued
+                      - Processed
+                      - Sent
+                      - Delivered
+                      - Failed
+                      - Received
+                  response:
+                    type: array
+                    example: []
+                    description: 'The response received from the device or sending server.'
+                    enum: []
+                  messenger:
+                    type: string
+                    example: 'Sim #22'
+                    description: 'The sim or sender id used for the message.'
+                    enum: []
+                  sent_at:
+                    type: string
+                    example: '2025-09-08T00:09:04.000000Z'
+                    description: 'The date and time when the message was sent.'
+                    enum: []
+                  delivered_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time when the message was delivered.'
+                    enum: []
+                required:
+                  - id
+                  - from
+                  - to
+                  - content
+                  - type
+                  - attachments
+                  - status
+                  - response
+                  - messenger
+                  - sent_at
+                  - delivered_at
+      tags:
+        - Messages
+    delete:
+      summary: 'Delete a message'
+      operationId: deleteAMessage
+      description: 'Permanently deletes a message. It cannot be undone.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - Messages
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the message.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/sender-ids:
+    get:
+      summary: 'List all sender ids'
+      operationId: listAllSenderIds
+      description: 'Returns a list of sender ids. The sender ids are returned sorted by creation date, with the most recently created sender id appearing first.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 23
+                      value: '647973'
+                    -
+                      id: 24
+                      value: '731066'
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 100
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 23
+                        value: '647973'
+                      -
+                        id: 24
+                        value: '731066'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 23
+                        value:
+                          type: string
+                          example: '647973'
+                    required:
+                      - id
+                      - value
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 100
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - SenderIds
+  '/api/v1/sender-ids/{id}':
+    get:
+      summary: 'Retrieve a sender id'
+      operationId: retrieveASenderId
+      description: 'Retrieves a SenderId object.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 25
+                  value: '574311'
+                properties:
+                  id:
+                    type: integer
+                    example: 25
+                    description: 'The ID of the sender id.'
+                    enum: []
+                  value:
+                    type: string
+                    example: '574311'
+                    description: 'The value of the sender id.'
+                    enum: []
+                required:
+                  - id
+                  - value
+      tags:
+        - SenderIds
+    delete:
+      summary: 'Delete a sender id'
+      operationId: deleteASenderId
+      description: 'Permanently deletes a sender id. Also removes any messages sent using this sender id. It cannot be undone.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - SenderIds
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the sender id.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  '/api/v1/sending-servers/{sending_server_id}/sender-ids':
+    post:
+      summary: 'Create a sender id for a sending server'
+      operationId: createASenderIdForASendingServer
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 26
+                  value: '583848'
+                properties:
+                  id:
+                    type: integer
+                    example: 26
+                    description: 'The ID of the sender id.'
+                    enum: []
+                  value:
+                    type: string
+                    example: '583848'
+                    description: 'The value of the sender id.'
+                    enum: []
+                required:
+                  - id
+                  - value
+      tags:
+        - SenderIds
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                value:
+                  type: string
+                  description: 'The sender id value. Must not be greater than 11 characters.'
+                  example: MySenderID
+                  nullable: false
+              required:
+                - value
+    parameters:
+      -
+        in: path
+        name: sending_server_id
+        description: 'The ID of the sending server.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/sending-servers:
+    get:
+      summary: 'List all sending servers'
+      operationId: listAllSendingServers
+      description: 'Returns a list of sending servers. The sending servers are returned sorted by creation date, with the most recently created sending server appearing first.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 5
+                      name: 'Gideon Boyer'
+                      driver: Textlocal
+                      supported_types:
+                        - SMS
+                      config:
+                        url: 'https://api.textlocal.in'
+                        test: true
+                        api_key: NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=
+                      enabled: true
+                      created_at: '2025-09-08T05:42:25.000000Z'
+                    -
+                      id: 6
+                      name: 'Amelia Koelpin'
+                      driver: Textlocal
+                      supported_types:
+                        - MMS
+                      config:
+                        url: 'https://api.textlocal.in'
+                        test: true
+                        api_key: NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=
+                      enabled: true
+                      created_at: '2025-09-08T05:42:25.000000Z'
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 100
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 5
+                        name: 'Gideon Boyer'
+                        driver: Textlocal
+                        supported_types:
+                          - SMS
+                        config:
+                          url: 'https://api.textlocal.in'
+                          test: true
+                          api_key: NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=
+                        enabled: true
+                        created_at: '2025-09-08T05:42:25.000000Z'
+                      -
+                        id: 6
+                        name: 'Amelia Koelpin'
+                        driver: Textlocal
+                        supported_types:
+                          - MMS
+                        config:
+                          url: 'https://api.textlocal.in'
+                          test: true
+                          api_key: NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=
+                        enabled: true
+                        created_at: '2025-09-08T05:42:25.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 5
+                        name:
+                          type: string
+                          example: 'Gideon Boyer'
+                        driver:
+                          type: string
+                          example: Textlocal
+                        supported_types:
+                          type: array
+                          example:
+                            - SMS
+                          items:
+                            type: string
+                        config:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: 'https://api.textlocal.in'
+                            test:
+                              type: boolean
+                              example: true
+                            api_key:
+                              type: string
+                              example: NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=
+                        enabled:
+                          type: boolean
+                          example: true
+                        created_at:
+                          type: string
+                          example: '2025-09-08T05:42:25.000000Z'
+                    required:
+                      - id
+                      - name
+                      - driver
+                      - supported_types
+                      - config
+                      - enabled
+                      - created_at
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 100
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - 'Sending Servers'
+    post:
+      summary: 'Create a sending server'
+      operationId: createASendingServer
+      description: ''
+      parameters: []
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 8
+                  name: 'Gideon Boyer'
+                  driver: Textlocal
+                  supported_types:
+                    - SMS
+                  config:
+                    url: 'https://api.textlocal.in'
+                    test: true
+                    api_key: NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=
+                  enabled: true
+                  created_at: '2025-09-08T05:42:25.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 8
+                    description: 'The ID of the sending server.'
+                    enum: []
+                  name:
+                    type: string
+                    example: 'Gideon Boyer'
+                    description: 'The name of the sending server.'
+                    enum: []
+                  driver:
+                    type: string
+                    example: Textlocal
+                    description: 'The driver of the sending server.'
+                    enum: []
+                  supported_types:
+                    type: array
+                    example:
+                      - SMS
+                    description: 'The types of messages supported by the sending server.'
+                    enum: []
+                    items:
+                      type: string
+                  config:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        example: 'https://api.textlocal.in'
+                      test:
+                        type: boolean
+                        example: true
+                      api_key:
+                        type: string
+                        example: NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=
+                    description: 'The sending server configuration.'
+                  enabled:
+                    type: boolean
+                    example: true
+                    description: 'Whether the sending server is enabled or not.'
+                    enum: []
+                  created_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time when the sending server was created.'
+                    enum: []
+                required:
+                  - id
+                  - name
+                  - driver
+                  - supported_types
+                  - config
+                  - enabled
+                  - created_at
+      tags:
+        - 'Sending Servers'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the sending server.'
+                  example: Twilio
+                  nullable: false
+                driver:
+                  type: string
+                  description: 'The driver of the sending server.'
+                  example: twilio
+                  nullable: false
+                  enum:
+                    - Custom
+                    - Textlocal
+                    - Twilio
+                supported_types:
+                  type: array
+                  description: ''
+                  example:
+                    - MMS
+                  items:
+                    type: string
+                    enum:
+                      - SMS
+                      - MMS
+                      - WhatsApp
+                config:
+                  type: object
+                  description: 'The configuration for the sending server.'
+                  example:
+                    account_sid: ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    auth_token: your_auth_token
+                    from: '+15017122661'
+                  nullable: false
+                  properties: {  }
+                enabled:
+                  type: boolean
+                  description: 'The status of the sending server.'
+                  example: false
+                  nullable: false
+              required:
+                - name
+                - driver
+                - supported_types
+                - config
+                - enabled
+  '/api/v1/sending-servers/{id}':
+    get:
+      summary: 'Retrieve a sending server'
+      operationId: retrieveASendingServer
+      description: 'Retrieves a SendingServer object.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 7
+                  name: 'Gideon Boyer'
+                  driver: Textlocal
+                  supported_types:
+                    - SMS
+                  config:
+                    url: 'https://api.textlocal.in'
+                    test: true
+                    api_key: NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=
+                  enabled: true
+                  created_at: '2025-09-08T05:42:25.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 7
+                    description: 'The ID of the sending server.'
+                    enum: []
+                  name:
+                    type: string
+                    example: 'Gideon Boyer'
+                    description: 'The name of the sending server.'
+                    enum: []
+                  driver:
+                    type: string
+                    example: Textlocal
+                    description: 'The driver of the sending server.'
+                    enum: []
+                  supported_types:
+                    type: array
+                    example:
+                      - SMS
+                    description: 'The types of messages supported by the sending server.'
+                    enum: []
+                    items:
+                      type: string
+                  config:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                        example: 'https://api.textlocal.in'
+                      test:
+                        type: boolean
+                        example: true
+                      api_key:
+                        type: string
+                        example: NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=
+                    description: 'The sending server configuration.'
+                  enabled:
+                    type: boolean
+                    example: true
+                    description: 'Whether the sending server is enabled or not.'
+                    enum: []
+                  created_at:
+                    type: string
+                    example: '2025-09-08T05:42:25.000000Z'
+                    description: 'The date and time when the sending server was created.'
+                    enum: []
+                required:
+                  - id
+                  - name
+                  - driver
+                  - supported_types
+                  - config
+                  - enabled
+                  - created_at
+      tags:
+        - 'Sending Servers'
+    put:
+      summary: 'Update a sending server'
+      operationId: updateASendingServer
+      description: "Update the specific sending server by setting the values of the parameters passed. It is recommended to retrieve the sending server first to get the sending server's current state because partial updates are not supported."
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - 'Sending Servers'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'The name of the sending server.'
+                  example: Twilio
+                  nullable: false
+                driver:
+                  type: string
+                  description: 'The driver of the sending server.'
+                  example: twilio
+                  nullable: false
+                  enum:
+                    - Custom
+                    - Textlocal
+                    - Twilio
+                supported_types:
+                  type: array
+                  description: ''
+                  example:
+                    - MMS
+                  items:
+                    type: string
+                    enum:
+                      - SMS
+                      - MMS
+                      - WhatsApp
+                config:
+                  type: object
+                  description: 'The configuration for the sending server.'
+                  example:
+                    account_sid: ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                    auth_token: your_auth_token
+                    from: '+15017122661'
+                  nullable: false
+                  properties: {  }
+                enabled:
+                  type: boolean
+                  description: 'The status of the sending server.'
+                  example: false
+                  nullable: false
+              required:
+                - name
+                - driver
+                - supported_types
+                - config
+                - enabled
+    delete:
+      summary: 'Delete a sending server'
+      operationId: deleteASendingServer
+      description: 'Permanently deletes a sending server. Also removes sender ids associated with the sending server and any messages associated with those sender ids. It cannot be undone.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - 'Sending Servers'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the sending server.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/ussd-pulls/send:
+    get:
+      summary: 'Send USSD pulls'
+      operationId: sendUSSDPulls
+      description: 'Sends USSD Pull campaign.'
+      parameters: []
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 14
+                  name: 'Blaise Pouros'
+                  scheduled_at: '2025-12-16T20:37:15.000000Z'
+                  timezone: America/Indiana/Knox
+                  recurring: true
+                  frequency: 5
+                  frequency_unit: Minute
+                  ends_at: '2026-09-05T09:37:45.000000Z'
+                  repeat_at: null
+                  active_hours: '09:00-17:00'
+                  days_of_week:
+                    - 1
+                    - 3
+                    - 5
+                    - 7
+                  status: Processed
+                  type: MMS
+                  options:
+                    delay: '34'
+                    prioritize: true
+                  created_at: '2025-09-08T05:42:26.000000Z'
+                  updated_at: '2025-09-08T05:42:26.000000Z'
+                properties:
+                  id:
+                    type: integer
+                    example: 14
+                    description: 'The ID of the campaign.'
+                    enum: []
+                  name:
+                    type: string
+                    example: 'Blaise Pouros'
+                    description: 'The name of the campaign.'
+                    enum: []
+                  scheduled_at:
+                    type: string
+                    example: '2025-12-16T20:37:15.000000Z'
+                    description: 'The date and time when the campaign is scheduled to run.'
+                    enum: []
+                  timezone:
+                    type: string
+                    example: America/Indiana/Knox
+                    description: 'The timezone of the campaign.'
+                    enum: []
+                  recurring:
+                    type: boolean
+                    example: true
+                    description: 'Whether the campaign is recurring.'
+                    enum: []
+                  frequency:
+                    type: integer
+                    example: 5
+                    description: 'The frequency of the campaign.'
+                    enum: []
+                  frequency_unit:
+                    type: string
+                    example: Minute
+                    description: 'The unit of the frequency.'
+                    enum: []
+                  ends_at:
+                    type: string
+                    example: '2026-09-05T09:37:45.000000Z'
+                    description: 'The date and time when the recurring campaign ends.'
+                    enum: []
+                  repeat_at:
+                    type: string
+                    example: null
+                    description: 'The date and time when the campaign is scheduled to repeat.'
+                    enum: []
+                  active_hours:
+                    type: string
+                    example: '09:00-17:00'
+                    description: 'The timespan of a day when the campaign is active.'
+                    enum: []
+                  days_of_week:
+                    type: array
+                    example:
+                      - 1
+                      - 3
+                      - 5
+                      - 7
+                    description: 'The days of the week when the campaign is active.'
+                    enum: []
+                    items:
+                      type: integer
+                  status:
+                    type: string
+                    example: Processed
+                    description: 'The status of the campaign.'
+                    enum: []
+                  type:
+                    type: string
+                    example: MMS
+                    description: 'The type of the campaign.'
+                    enum: []
+                  options:
+                    type: object
+                    properties:
+                      delay:
+                        type: string
+                        example: '34'
+                        description: 'The delay between each item before sending the next one.'
+                        enum: []
+                      prioritize:
+                        type: boolean
+                        example: true
+                        description: 'Whether to prioritize the campaign.'
+                        enum: []
+                    description: 'The options of the campaign.'
+                  created_at:
+                    type: string
+                    example: '2025-09-08T05:42:26.000000Z'
+                    description: 'The date and time the campaign was created.'
+                    enum: []
+                  updated_at:
+                    type: string
+                    example: '2025-09-08T05:42:26.000000Z'
+                    description: 'The date and time the campaign was last updated.'
+                    enum: []
+                required:
+                  - id
+                  - name
+                  - scheduled_at
+                  - timezone
+                  - recurring
+                  - frequency
+                  - frequency_unit
+                  - ends_at
+                  - repeat_at
+                  - active_hours
+                  - days_of_week
+                  - status
+                  - type
+                  - options
+                  - created_at
+                  - updated_at
+      tags:
+        - 'USSD Pulls'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sims:
+                  type: array
+                  description: 'The ids of the sims to use for sending the USSD pulls. You can also set the first element to * and it will use all available sims.'
+                  example:
+                    - 1
+                  items:
+                    type: integer
+                ussd_codes:
+                  type: array
+                  description: 'The array of USSD codes to send. Must match the regex /(?:\*\d+)+#/.'
+                  example:
+                    - '*123#'
+                  items:
+                    type: string
+                delay:
+                  type: string
+                  description: 'The delay in seconds between each USSD pull.'
+                  example: 60
+                  nullable: true
+                prioritize:
+                  type: boolean
+                  description: 'Whether to prioritize the campaign.'
+                  example: false
+                  nullable: true
+                name:
+                  type: string
+                  description: 'The name of the campaign. Must not be greater than 255 characters.'
+                  example: 'My Campaign'
+                  nullable: false
+                scheduled_at:
+                  type: string
+                  description: 'The date and time the campaign is scheduled to run. Must be a valid date.'
+                  example: '2021-01-01T12:00:00Z'
+                  nullable: false
+                recurring:
+                  type: boolean
+                  description: 'Whether the campaign is recurring.'
+                  example: false
+                  nullable: false
+                frequency:
+                  type: integer
+                  description: 'The frequency of the campaign. This field is required when <code>recurring</code> is <code>true</code>. Must be at least 1.'
+                  example: 1
+                  nullable: false
+                frequency_unit:
+                  type: string
+                  description: 'The unit of the frequency. This field is required when <code>recurring</code> is <code>true</code>.'
+                  example: day
+                  nullable: false
+                  enum:
+                    - Minute
+                    - Hour
+                    - Day
+                    - Week
+                    - Month
+                    - Year
+                ends_at:
+                  type: string
+                  description: 'The date and time when the recurring campaign ends. Must be a valid date.'
+                  example: '2021-01-01T12:00:00Z'
+                  nullable: false
+                timezone:
+                  type: string
+                  description: 'The timezone of the campaign. This is used for scheduled_at, ends_at, days_of_week, and active_hours. This field is required when <code>active_hours</code>, <code>days_of_week</code>, <code>scheduled_at</code>, or <code>ends_at</code> is present. Must be a valid time zone, such as <code>Africa/Accra</code>.'
+                  example: UTC
+                  nullable: false
+                days_of_week:
+                  type: array
+                  description: 'The days of the week when the campaign is active.'
+                  example:
+                    - 1
+                  items:
+                    type: string
+                    enum:
+                      - '1'
+                      - '2'
+                      - '3'
+                      - '4'
+                      - '5'
+                      - '6'
+                      - '7'
+                active_hours:
+                  type: object
+                  description: 'Must contain 2 items.'
+                  example: null
+                  nullable: false
+                  properties:
+                    start:
+                      type: string
+                      description: 'The start time of the active hours. This field is required when <code>active_hours.end</code> is present. Must be a valid date in the format <code>H:i</code>. Must be a date before <code>active_hours.end</code>.'
+                      example: '08:00'
+                      nullable: false
+                    end:
+                      type: string
+                      description: 'The end time of the active hours. This field is required when <code>active_hours.start</code> is present. Must be a valid date in the format <code>H:i</code>. Must be a date after <code>active_hours.start</code>.'
+                      example: '17:00'
+                      nullable: false
+                random_sender:
+                  type: boolean
+                  description: 'Whether to use a random sim from selected sims for entire campaign.'
+                  example: false
+                  nullable: false
+              required:
+                - sims
+                - ussd_codes
+  /api/v1/ussd-pulls:
+    get:
+      summary: 'List all USSD pulls'
+      operationId: listAllUSSDPulls
+      description: 'Returns a list of USSD pulls. The USSD pulls are returned sorted by sent date, with the most recently sent USSD pull appearing first.'
+      parameters:
+        -
+          in: query
+          name: user
+          description: 'Filter by user id. Only available for admin. Must be at least 1.'
+          example: 1.0
+          required: false
+          schema:
+            type: number
+            description: 'Filter by user id. Only available for admin. Must be at least 1.'
+            example: 1.0
+            nullable: true
+        -
+          in: query
+          name: campaign
+          description: 'Filter by campaign id. Must be at least 1.'
+          example: 1.0
+          required: false
+          schema:
+            type: number
+            description: 'Filter by campaign id. Must be at least 1.'
+            example: 1.0
+            nullable: true
+        -
+          in: query
+          name: sim
+          description: 'Filter by sim id. Must be at least 1.'
+          example: 1.0
+          required: false
+          schema:
+            type: number
+            description: 'Filter by sim id. Must be at least 1.'
+            example: 1.0
+            nullable: true
+        -
+          in: query
+          name: statuses
+          description: ''
+          example:
+            - Queued
+          required: false
+          schema:
+            type: array
+            description: ''
+            example:
+              - Queued
+            items:
+              type: string
+              enum:
+                - Pending
+                - Queued
+                - Completed
+                - Failed
+        -
+          in: query
+          name: after
+          description: 'Show USSD pulls that are sent after this date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date before or equal to <code>before</code>.'
+          example: '2021-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Show USSD pulls that are sent after this date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date before or equal to <code>before</code>.'
+            example: '2021-01-01'
+            nullable: true
+        -
+          in: query
+          name: before
+          description: 'Show USSD pulls that are sent before this date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>after</code>.'
+          example: '2021-01-01'
+          required: false
+          schema:
+            type: string
+            description: 'Show USSD pulls that are sent before this date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>after</code>.'
+            example: '2021-01-01'
+            nullable: true
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 281
+                      code: '*3434200#'
+                      response: null
+                      status: Failed
+                      sim_id: 23
+                      sent_at: '2025-09-08T11:12:26.000000Z'
+                      received_at: null
+                    -
+                      id: 282
+                      code: '*32721213140#'
+                      response: 'Aut tempora ut possimus odit nisi sed rem ducimus. Ut voluptatum porro repudiandae doloremque qui in. Id sed voluptatem saepe magnam dicta tempore blanditiis quos.'
+                      status: Completed
+                      sim_id: 24
+                      sent_at: '2025-09-08T11:12:26.000000Z'
+                      received_at: '2025-09-08T12:31:12.000000Z'
+                  links:
+                    first: '/?page=1'
+                    last: '/?page=1'
+                    prev: null
+                    next: null
+                  meta:
+                    current_page: 1
+                    from: 1
+                    last_page: 1
+                    links:
+                      -
+                        url: null
+                        label: '&laquo; Previous'
+                        page: null
+                        active: false
+                      -
+                        url: '/?page=1'
+                        label: '1'
+                        page: 1
+                        active: true
+                      -
+                        url: null
+                        label: 'Next &raquo;'
+                        page: null
+                        active: false
+                    path: /
+                    per_page: 100
+                    to: 2
+                    total: 2
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 281
+                        code: '*3434200#'
+                        response: null
+                        status: Failed
+                        sim_id: 23
+                        sent_at: '2025-09-08T11:12:26.000000Z'
+                        received_at: null
+                      -
+                        id: 282
+                        code: '*32721213140#'
+                        response: 'Aut tempora ut possimus odit nisi sed rem ducimus. Ut voluptatum porro repudiandae doloremque qui in. Id sed voluptatem saepe magnam dicta tempore blanditiis quos.'
+                        status: Completed
+                        sim_id: 24
+                        sent_at: '2025-09-08T11:12:26.000000Z'
+                        received_at: '2025-09-08T12:31:12.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 281
+                        code:
+                          type: string
+                          example: '*3434200#'
+                        response:
+                          type: string
+                          example: null
+                        status:
+                          type: string
+                          example: Failed
+                        sim_id:
+                          type: integer
+                          example: 23
+                        sent_at:
+                          type: string
+                          example: '2025-09-08T11:12:26.000000Z'
+                        received_at:
+                          type: string
+                          example: null
+                    required:
+                      - id
+                      - code
+                      - response
+                      - status
+                      - sim_id
+                      - sent_at
+                      - received_at
+                  links:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: '/?page=1'
+                      last:
+                        type: string
+                        example: '/?page=1'
+                      prev:
+                        type: string
+                        example: null
+                      next:
+                        type: string
+                        example: null
+                  meta:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      from:
+                        type: integer
+                        example: 1
+                      last_page:
+                        type: integer
+                        example: 1
+                      links:
+                        type: array
+                        example:
+                          -
+                            url: null
+                            label: '&laquo; Previous'
+                            page: null
+                            active: false
+                          -
+                            url: '/?page=1'
+                            label: '1'
+                            page: 1
+                            active: true
+                          -
+                            url: null
+                            label: 'Next &raquo;'
+                            page: null
+                            active: false
+                        items:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                              example: null
+                            label:
+                              type: string
+                              example: '&laquo; Previous'
+                            page:
+                              type: string
+                              example: null
+                            active:
+                              type: boolean
+                              example: false
+                      path:
+                        type: string
+                        example: /
+                      per_page:
+                        type: integer
+                        example: 100
+                      to:
+                        type: integer
+                        example: 2
+                      total:
+                        type: integer
+                        example: 2
+      tags:
+        - 'USSD Pulls'
+  '/api/v1/ussd-pulls/{id}':
+    get:
+      summary: 'Retrieve a USSD pull'
+      operationId: retrieveAUSSDPull
+      description: 'Retrieves a USSD Pull object.'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  id: 283
+                  code: '*00268*8#'
+                  response: null
+                  status: Failed
+                  sim_id: 25
+                  sent_at: '2025-09-08T11:12:26.000000Z'
+                  received_at: null
+                properties:
+                  id:
+                    type: integer
+                    example: 283
+                    description: 'The ID of the USSD pull.'
+                    enum: []
+                  code:
+                    type: string
+                    example: '*00268*8#'
+                    description: 'The USSD code.'
+                    enum: []
+                  response:
+                    type: string
+                    example: null
+                    description: 'The response from the USSD pull.'
+                    enum: []
+                  status:
+                    type: string
+                    example: Failed
+                    description: 'The status of the USSD pull.'
+                    enum:
+                      - Pending
+                      - Queued
+                      - Completed
+                      - Failed
+                  sim_id:
+                    type: integer
+                    example: 25
+                    description: 'The id of the sim used to send the USSD pull.'
+                    enum: []
+                  sent_at:
+                    type: string
+                    example: '2025-09-08T11:12:26.000000Z'
+                    description: 'The date and time when the USSD pull was sent.'
+                    enum: []
+                  received_at:
+                    type: string
+                    example: null
+                    description: 'The date and time when the response from the USSD pull was received.'
+                    enum: []
+                required:
+                  - id
+                  - code
+                  - response
+                  - status
+                  - sim_id
+                  - sent_at
+                  - received_at
+      tags:
+        - 'USSD Pulls'
+    delete:
+      summary: 'Delete a USSD pull'
+      operationId: deleteAUSSDPull
+      description: 'Permanently deletes a USSD pull. It cannot be undone.'
+      parameters: []
+      responses:
+        204:
+          description: 'No content'
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: true
+      tags:
+        - 'USSD Pulls'
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the ussd pull.'
+        example: 1
+        required: true
+        schema:
+          type: integer

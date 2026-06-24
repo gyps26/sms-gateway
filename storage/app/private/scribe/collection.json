@@ -1,0 +1,1921 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "{{ config(\"app.url\") }}"
+        }
+    ],
+    "info": {
+        "name": "SMS Gateway API Documentation",
+        "_postman_id": "568fcc4e-c761-4908-8f39-6917c658fc47",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Call Log",
+            "description": "Call Log",
+            "item": [
+                {
+                    "name": "List all calls",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/calls",
+                            "query": [
+                                {
+                                    "key": "type",
+                                    "value": "Incoming",
+                                    "description": "Filter by call type.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sim",
+                                    "value": "1",
+                                    "description": "Filter by SIM ID. Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "answered",
+                                    "value": "",
+                                    "description": "",
+                                    "disabled": true
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/calls?type=Incoming&sim=1&answered="
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of calls. The calls are returned sorted by creation date, with the most recently created call appearing first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":141,\"number\":\"973-450-3511\",\"type\":\"Missed\",\"sim_id\":1,\"started_at\":\"1991-01-07T14:12:01.000000Z\",\"duration\":1912},{\"id\":142,\"number\":\"724-602-7973\",\"type\":\"Voicemail\",\"sim_id\":1,\"started_at\":\"1988-04-26T00:07:31.000000Z\",\"duration\":1669}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":100,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a call",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/calls\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/calls\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the call."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a call."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Campaigns",
+            "description": "Campaigns",
+            "item": [
+                {
+                    "name": "List all campaigns",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/campaigns",
+                            "query": [
+                                {
+                                    "key": "status",
+                                    "value": "Sent",
+                                    "description": "Filter by campaign status.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "type",
+                                    "value": "MMS",
+                                    "description": "Filter by campaign type.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "recurring",
+                                    "value": "1",
+                                    "description": "Filter by recurring campaigns.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "after",
+                                    "value": "2021-01-01",
+                                    "description": "Filter by campaigns after a certain date. Must be a valid date in the format Y-m-d. Must be a date before or equal to before.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "before",
+                                    "value": "2025-01-01",
+                                    "description": "Filter by campaigns before a certain date. Must be a valid date in the format Y-m-d. Must be a date after or equal to after.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/campaigns?status=Sent&type=MMS&recurring=1&after=2021-01-01&before=2025-01-01"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of campaigns. The campaigns are returned sorted by creation date, with the most recently created campaign appearing first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":7,\"name\":\"Leo Gusikowski\",\"scheduled_at\":null,\"timezone\":\"Atlantic\\\/Faroe\",\"recurring\":false,\"frequency\":null,\"frequency_unit\":null,\"ends_at\":null,\"repeat_at\":null,\"active_hours\":\"09:00-17:00\",\"days_of_week\":[1,3,5,6,7],\"status\":\"Processed\",\"type\":\"USSD Pull\",\"options\":{\"delay\":\"39\",\"prioritize\":false},\"created_at\":\"2025-09-08T05:42:25.000000Z\",\"updated_at\":\"2025-09-08T05:42:25.000000Z\"},{\"id\":8,\"name\":\"Mr. Orland Hermiston II\",\"scheduled_at\":\"2026-05-01T21:31:16.000000Z\",\"timezone\":\"America\\\/Boise\",\"recurring\":false,\"frequency\":null,\"frequency_unit\":null,\"ends_at\":null,\"repeat_at\":null,\"active_hours\":\"09:00-17:00\",\"days_of_week\":[1,2,4,5],\"status\":\"Processed\",\"type\":\"SMS\",\"options\":{\"delay\":\"60\",\"prioritize\":false,\"delivery_report\":false},\"created_at\":\"2025-09-08T05:42:25.000000Z\",\"updated_at\":\"2025-09-08T05:42:25.000000Z\"}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":100,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a campaign",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/campaigns\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/campaigns\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the campaign."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves a Campaign object."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":9,\"name\":\"Stefanie Lebsack\",\"scheduled_at\":\"2025-10-23T01:36:18.000000Z\",\"timezone\":\"Asia\\\/Atyrau\",\"recurring\":false,\"frequency\":null,\"frequency_unit\":null,\"ends_at\":null,\"repeat_at\":null,\"active_hours\":\"00:00-23:59\",\"days_of_week\":[1,2,5,6],\"status\":\"Processed\",\"type\":\"SMS\",\"options\":{\"delay\":\"57\",\"prioritize\":false,\"delivery_report\":true},\"created_at\":\"2025-09-08T05:42:25.000000Z\",\"updated_at\":\"2025-09-08T05:42:25.000000Z\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List all devices used in a campaign",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/campaigns\/:campaign_id\/devices",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/campaigns\/:campaign_id\/devices",
+                            "variable": [
+                                {
+                                    "id": "campaign_id",
+                                    "key": "campaign_id",
+                                    "value": "1",
+                                    "description": "The ID of the campaign."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of devices used in a campaign. The devices are returned with sims used in the campaign and status of the campaign on the device."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":11,\"name\":null,\"model\":\"Nokia X20\",\"android_version\":\"7\",\"app_version\":\"0.20.34\",\"battery\":46,\"is_charging\":false,\"enabled\":true,\"sims\":[{\"id\":15,\"name\":\"Koelpin, Nolan and Bailey\",\"label\":null,\"number\":\"+15202822732\",\"country\":\"SZ\",\"carrier\":\"Miller Ltd\",\"slot\":0,\"data_roaming\":false,\"signal_strength\":4,\"active\":true}]},{\"id\":12,\"name\":null,\"model\":\"Xiaomi Mi 11\",\"android_version\":\"9\",\"app_version\":\"3.73.98\",\"battery\":71,\"is_charging\":false,\"enabled\":true,\"sims\":[{\"id\":16,\"name\":\"Hermiston, Parker and Marvin\",\"label\":null,\"number\":\"+13648507362\",\"country\":\"GE\",\"carrier\":\"Littel Ltd\",\"slot\":0,\"data_roaming\":false,\"signal_strength\":4,\"active\":true}]}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":10,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "List all sending servers used in a campaign",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/campaigns\/:campaign_id\/sending-servers",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/campaigns\/:campaign_id\/sending-servers",
+                            "variable": [
+                                {
+                                    "id": "campaign_id",
+                                    "key": "campaign_id",
+                                    "value": "1",
+                                    "description": "The ID of the campaign."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of sending servers used in a campaign. The sending servers are returned with sender ids used in the campaign and status of the campaign on the sending server."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":3,\"name\":\"Gideon Boyer\",\"enabled\":true,\"sender_ids\":[{\"id\":21,\"value\":\"942561\"}]},{\"id\":4,\"name\":\"Bridgette D'Amore\",\"enabled\":true,\"sender_ids\":[{\"id\":22,\"value\":\"597151\"}]}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":10,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update a campaign",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/campaigns\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/campaigns\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the campaign."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"New Campaign\"}"
+                        },
+                        "description": "Updates the specific campaign by setting the values of the parameters passed."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a campaign",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/campaigns\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/campaigns\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the campaign."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a campaign. Also deletes all messages or USSD pulls associated with it. It cannot be undone."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Contact Lists",
+            "description": "Contact Lists",
+            "item": [
+                {
+                    "name": "List all contact lists",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contact-lists",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contact-lists"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of contact lists. The contact lists are returned sorted by creation date, with the most recently created contact list appearing first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":11,\"name\":\"deborah.mayert\"},{\"id\":12,\"name\":\"kuhn.jaclyn\"}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":10,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a contact list",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contact-lists\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contact-lists\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the contact list."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves a Contact List object."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":13,\"name\":\"deborah.mayert\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create a contact list",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contact-lists",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contact-lists"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"My List\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"id\":14,\"name\":\"brown.maggie\"}",
+                            "name": "Created"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update a contact list",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contact-lists\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contact-lists\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the contact list."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"My List\"}"
+                        },
+                        "description": "Updates the specific contact list by setting the values of the parameters passed."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a contact list",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contact-lists\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contact-lists\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the contact list."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes the specific contact list. Also deletes all contacts and fields associated with it. It cannot be undone."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                },
+                {
+                    "name": "List all fields for a contact list",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contact-lists\/:contact_list_id\/fields",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contact-lists\/:contact_list_id\/fields",
+                            "variable": [
+                                {
+                                    "id": "contact_list_id",
+                                    "key": "contact_list_id",
+                                    "value": "1",
+                                    "description": "The ID of the contact list."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of fields for a contact list. The fields are returned sorted by creation date, with the most recently created field appearing first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":21,\"label\":\"Itaque\",\"tag\":\"itaque\",\"type\":\"email\",\"options\":null,\"default_value\":\"non\",\"required\":true},{\"id\":22,\"label\":\"Sed\",\"tag\":\"sed\",\"type\":\"multiselect\",\"options\":[{\"label\":\"quasi\",\"value\":\"commodi\"},{\"label\":\"tempore\",\"value\":\"in\"},{\"label\":\"qui\",\"value\":\"hic\"},{\"label\":\"sequi\",\"value\":\"corrupti\"},{\"label\":\"et\",\"value\":\"enim\"}],\"default_value\":[\"in\"],\"required\":true}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":50,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a field",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/fields\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/fields\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the field."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves a Field object."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":23,\"label\":\"Non\",\"tag\":\"non\",\"type\":\"email\",\"options\":null,\"default_value\":\"aspernatur\",\"required\":true}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create a field for a contact list",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contact-lists\/:contact_list_id\/fields",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contact-lists\/:contact_list_id\/fields",
+                            "variable": [
+                                {
+                                    "id": "contact_list_id",
+                                    "key": "contact_list_id",
+                                    "value": "1",
+                                    "description": "The ID of the contact list."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"label\":\"First Name\",\"tag\":\"first_name\",\"type\":\"text\",\"default_value\":\"John\",\"required\":false,\"options\":[{\"label\":\"Option 1\",\"value\":\"option_1\"}]}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"id\":24,\"label\":\"Est\",\"tag\":\"est\",\"type\":\"dropdown\",\"options\":[{\"label\":\"repellat\",\"value\":\"ut\"},{\"label\":\"est\",\"value\":\"accusantium\"},{\"label\":\"eaque\",\"value\":\"unde\"},{\"label\":\"enim\",\"value\":\"id\"},{\"label\":\"id\",\"value\":\"dolorem\"}],\"default_value\":null,\"required\":false}",
+                            "name": "Created"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update a field",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/fields\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/fields\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the field."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"label\":\"First Name\",\"tag\":\"first_name\",\"type\":\"text\",\"default_value\":\"John\",\"required\":false,\"options\":[{\"label\":\"Option 1\",\"value\":\"option_1\"}]}"
+                        },
+                        "description": "Updates the specific field by setting the values of the parameters passed. It is recommended to retrieve the field first to get the field's current state because partial updates are not supported."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a field",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/fields\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/fields\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the field."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a field. Also deletes all associated field values of contacts. It cannot be undone."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Contacts",
+            "description": "Contacts",
+            "item": [
+                {
+                    "name": "List all contacts for a contact list",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contact-lists\/:contact_list_id\/contacts",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contact-lists\/:contact_list_id\/contacts",
+                            "variable": [
+                                {
+                                    "id": "contact_list_id",
+                                    "key": "contact_list_id",
+                                    "value": "1",
+                                    "description": "The ID of the contact list."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of contacts for a contact list. The contacts are returned sorted by creation date, with the most recently created contact appearing first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":2001,\"mobile_number\":\"+14329282957\",\"subscribed\":true,\"created_at\":\"2025-09-08T05:42:25.000000Z\",\"updated_at\":\"2025-09-08T05:42:25.000000Z\"},{\"id\":2002,\"mobile_number\":\"+18058165575\",\"subscribed\":false,\"created_at\":\"2025-09-08T05:42:25.000000Z\",\"updated_at\":\"2025-09-08T05:42:25.000000Z\"}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":100,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a contact",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contacts\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contacts\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the contact."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves a Contact object."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":2003,\"mobile_number\":\"+19475350806\",\"subscribed\":true,\"created_at\":\"2025-09-08T05:42:25.000000Z\",\"updated_at\":\"2025-09-08T05:42:25.000000Z\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create a contact in a contact list",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contact-lists\/:contact_list_id\/contacts",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contact-lists\/:contact_list_id\/contacts",
+                            "variable": [
+                                {
+                                    "id": "contact_list_id",
+                                    "key": "contact_list_id",
+                                    "value": "1",
+                                    "description": "The ID of the contact list."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mobile_number\":\"+12025886500\",\"subscribed\":false,\"first_name\":\"John\",\"last_name\":\"Doe\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"id\":2004,\"mobile_number\":\"+19475350806\",\"subscribed\":true,\"created_at\":\"2025-09-08T05:42:25.000000Z\",\"updated_at\":\"2025-09-08T05:42:25.000000Z\"}",
+                            "name": "Created"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update a contact",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contacts\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contacts\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the contact."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"mobile_number\":\"+12025886500\",\"subscribed\":false,\"first_name\":\"John\",\"last_name\":\"Doe\"}"
+                        },
+                        "description": "Update a contact in a contact list with the given data. It is recommended to retrieve the contact first to get the contact's current state because partial updates are not supported."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a contact",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/contacts\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/contacts\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the contact."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a contact. It cannot be undone."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Devices",
+            "description": "Devices",
+            "item": [
+                {
+                    "name": "List all devices",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/devices",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/devices"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of devices. The devices are returned sorted by creation date, with the most recently created device appearing first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":13,\"name\":null,\"model\":\"Nokia X20\",\"enabled\":true,\"android_version\":\"7\",\"app_version\":\"0.20.34\",\"battery\":46,\"is_charging\":false,\"updated_at\":\"2025-09-08T05:42:25.000000Z\",\"sims\":[{\"id\":17,\"name\":\"Nitzsche, Rogahn and Jakubowski\",\"label\":null,\"number\":\"+16284319281\",\"country\":\"IL\",\"carrier\":\"Gerhold, Walter and Schinner\",\"slot\":0,\"data_roaming\":false,\"signal_strength\":4,\"active\":true}]},{\"id\":14,\"name\":null,\"model\":\"OnePlus Nord 2 5G\",\"enabled\":true,\"android_version\":\"11\",\"app_version\":\"3.40.82\",\"battery\":0,\"is_charging\":true,\"updated_at\":\"2025-09-08T05:42:25.000000Z\",\"sims\":[{\"id\":18,\"name\":\"Langosh, Waters and Wolf\",\"label\":null,\"number\":\"+13108318149\",\"country\":\"BW\",\"carrier\":\"Boehm LLC\",\"slot\":0,\"data_roaming\":true,\"signal_strength\":2,\"active\":true}]}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":100,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a device",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/devices\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/devices\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the device."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves a Device object."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":15,\"name\":null,\"model\":\"Nokia X20\",\"enabled\":true,\"android_version\":\"7\",\"app_version\":\"0.20.34\",\"battery\":46,\"is_charging\":false,\"updated_at\":\"2025-09-08T05:42:25.000000Z\",\"sims\":[{\"id\":19,\"name\":\"Carter, Zieme and Oberbrunner\",\"label\":null,\"number\":\"+16819707512\",\"country\":\"KM\",\"carrier\":\"Kassulke-Ankunding\",\"slot\":0,\"data_roaming\":true,\"signal_strength\":3,\"active\":true}]}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Update a device",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/devices\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/devices\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the device."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"My Device\"}"
+                        },
+                        "description": "Update the specific device by setting the values of the parameters passed."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a device",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/devices\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/devices\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the device."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a device. Also removes the SIMs associated with the device and any messages, USSD Pulls and call logs associated with those SIMs. It cannot be undone."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Messages",
+            "description": "Messages",
+            "item": [
+                {
+                    "name": "Send messages",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/messages\/send",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/messages\/send"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"sims\":[1],\"sender_ids\":[1],\"random_sender\":false,\"contact_lists\":[1],\"mobile_numbers\":[\"+12345678901\"],\"type\":\"SMS\",\"message\":\"Hello, World!\",\"attachments\":[\"https:\\\/\\\/example.com\\\/image.jpg\"],\"delivery_report\":false,\"delay\":60,\"prioritize\":false,\"name\":\"My Campaign\",\"scheduled_at\":\"2021-01-01T12:00:00Z\",\"recurring\":false,\"frequency\":1,\"frequency_unit\":\"day\",\"ends_at\":\"2021-01-01T12:00:00Z\",\"timezone\":\"UTC\",\"days_of_week\":[1],\"active_hours\":{\"start\":\"08:00\",\"end\":\"17:00\"}}"
+                        },
+                        "description": "Send an SMS or MMS campaign."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"id\":10,\"name\":\"Blaise Pouros\",\"scheduled_at\":\"2025-12-16T20:37:14.000000Z\",\"timezone\":\"America\\\/Indiana\\\/Knox\",\"recurring\":true,\"frequency\":5,\"frequency_unit\":\"Minute\",\"ends_at\":\"2026-09-05T09:37:44.000000Z\",\"repeat_at\":null,\"active_hours\":\"09:00-17:00\",\"days_of_week\":[1,3,5,7],\"status\":\"Processed\",\"type\":\"MMS\",\"options\":{\"delay\":\"34\",\"prioritize\":true},\"created_at\":\"2025-09-08T05:42:25.000000Z\",\"updated_at\":\"2025-09-08T05:42:25.000000Z\"}",
+                            "name": "Created"
+                        }
+                    ]
+                },
+                {
+                    "name": "List all messages",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/messages",
+                            "query": [
+                                {
+                                    "key": "user",
+                                    "value": "1",
+                                    "description": "Filter by user id. Only available for admin. Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "campaign",
+                                    "value": "1",
+                                    "description": "Filter by campaign id. Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sim",
+                                    "value": "1",
+                                    "description": "Filter by sim id. This field is prohibited if sender_id is present. Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "message",
+                                    "value": "Hello%2C+World%21",
+                                    "description": "Filter by message. Must not be greater than 1600 characters.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "type",
+                                    "value": "SMS",
+                                    "description": "Filter by message type.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "statuses[0]",
+                                    "value": "Queued",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "after",
+                                    "value": "2021-01-01",
+                                    "description": "Filter by messages that are sent after this date. Must be a valid date in the format Y-m-d. Must be a date before or equal to before.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "before",
+                                    "value": "2024-01-01",
+                                    "description": "Filter by messages that are sent before this date. Must be a valid date in the format Y-m-d. Must be a date after or equal to after.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/messages?user=1&campaign=1&sim=1&message=Hello%2C+World%21&type=SMS&statuses[0]=Queued&after=2021-01-01&before=2024-01-01"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of messages. The messages are returned sorted by sent date, with the most recently sent message appearing first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":2061,\"from\":\"+17345017250\",\"to\":\"+19899609500\",\"content\":\"Itaque non aspernatur odio nam incidunt. Distinctio quam sed quasi commodi tempore.\",\"type\":\"SMS\",\"attachments\":[],\"status\":\"Sent\",\"response\":[],\"messenger\":\"Sim #20\",\"sent_at\":\"2025-09-07T08:20:33.000000Z\",\"delivered_at\":\"2025-09-08T05:42:25.000000Z\"},{\"id\":2062,\"from\":\"+13309437084\",\"to\":\"+14094483472\",\"content\":\"Porro aut tempora ut possimus odit. Sed rem ducimus est ut voluptatum porro repudiandae doloremque. In est id sed voluptatem.\",\"type\":\"WhatsApp\",\"attachments\":[],\"status\":\"Queued\",\"response\":[],\"messenger\":\"Sim #21\",\"sent_at\":\"2025-09-07T15:42:10.000000Z\",\"delivered_at\":\"2025-09-08T05:42:25.000000Z\"}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":100,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a message",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/messages\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/messages\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the message."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves a Message object."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":2063,\"from\":\"+15045565946\",\"to\":\"+14322823398\",\"content\":\"Eveniet et quasi qui corporis quae sequi. Est rerum quam recusandae omnis dolore. Perferendis et et amet earum illum qui.\",\"type\":\"WhatsApp\",\"attachments\":[],\"status\":\"Sent\",\"response\":[],\"messenger\":\"Sim #22\",\"sent_at\":\"2025-09-08T00:09:04.000000Z\",\"delivered_at\":\"2025-09-08T05:42:25.000000Z\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a message",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/messages\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/messages\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the message."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a message. It cannot be undone."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "SenderIds",
+            "description": "SenderIds",
+            "item": [
+                {
+                    "name": "List all sender ids",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/sender-ids",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/sender-ids"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of sender ids. The sender ids are returned sorted by creation date, with the most recently created sender id appearing first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":23,\"value\":\"647973\"},{\"id\":24,\"value\":\"731066\"}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":100,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a sender id",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/sender-ids\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/sender-ids\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the sender id."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves a SenderId object."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":25,\"value\":\"574311\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create a sender id for a sending server",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/sending-servers\/:sending_server_id\/sender-ids",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/sending-servers\/:sending_server_id\/sender-ids",
+                            "variable": [
+                                {
+                                    "id": "sending_server_id",
+                                    "key": "sending_server_id",
+                                    "value": "1",
+                                    "description": "The ID of the sending server."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"value\":\"MySenderID\"}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"id\":26,\"value\":\"583848\"}",
+                            "name": "Created"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a sender id",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/sender-ids\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/sender-ids\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the sender id."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a sender id. Also removes any messages sent using this sender id. It cannot be undone."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Sending Servers",
+            "description": "Sending Servers",
+            "item": [
+                {
+                    "name": "List all sending servers",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/sending-servers",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/sending-servers"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of sending servers. The sending servers are returned sorted by creation date, with the most recently created sending server appearing first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":5,\"name\":\"Gideon Boyer\",\"driver\":\"Textlocal\",\"supported_types\":[\"SMS\"],\"config\":{\"url\":\"https:\\\/\\\/api.textlocal.in\",\"test\":true,\"api_key\":\"NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=\"},\"enabled\":true,\"created_at\":\"2025-09-08T05:42:25.000000Z\"},{\"id\":6,\"name\":\"Amelia Koelpin\",\"driver\":\"Textlocal\",\"supported_types\":[\"MMS\"],\"config\":{\"url\":\"https:\\\/\\\/api.textlocal.in\",\"test\":true,\"api_key\":\"NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=\"},\"enabled\":true,\"created_at\":\"2025-09-08T05:42:25.000000Z\"}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":100,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a sending server",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/sending-servers\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/sending-servers\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the sending server."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves a SendingServer object."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":7,\"name\":\"Gideon Boyer\",\"driver\":\"Textlocal\",\"supported_types\":[\"SMS\"],\"config\":{\"url\":\"https:\\\/\\\/api.textlocal.in\",\"test\":true,\"api_key\":\"NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=\"},\"enabled\":true,\"created_at\":\"2025-09-08T05:42:25.000000Z\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Create a sending server",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/sending-servers",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/sending-servers"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Twilio\",\"driver\":\"twilio\",\"supported_types\":[\"MMS\"],\"config\":{\"account_sid\":\"ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\"auth_token\":\"your_auth_token\",\"from\":\"+15017122661\"},\"enabled\":false}"
+                        },
+                        "description": ""
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"id\":8,\"name\":\"Gideon Boyer\",\"driver\":\"Textlocal\",\"supported_types\":[\"SMS\"],\"config\":{\"url\":\"https:\\\/\\\/api.textlocal.in\",\"test\":true,\"api_key\":\"NDQ2NDYyNGQ0OTY2NGU3Njc5Nzc0ZTM0Njk2NjQzNjI=\"},\"enabled\":true,\"created_at\":\"2025-09-08T05:42:25.000000Z\"}",
+                            "name": "Created"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update a sending server",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/sending-servers\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/sending-servers\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the sending server."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"name\":\"Twilio\",\"driver\":\"twilio\",\"supported_types\":[\"MMS\"],\"config\":{\"account_sid\":\"ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\",\"auth_token\":\"your_auth_token\",\"from\":\"+15017122661\"},\"enabled\":false}"
+                        },
+                        "description": "Update the specific sending server by setting the values of the parameters passed. It is recommended to retrieve the sending server first to get the sending server's current state because partial updates are not supported."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a sending server",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/sending-servers\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/sending-servers\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the sending server."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a sending server. Also removes sender ids associated with the sending server and any messages associated with those sender ids. It cannot be undone."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "USSD Pulls",
+            "description": "USSD Pulls",
+            "item": [
+                {
+                    "name": "Send USSD pulls",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/ussd-pulls\/send",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/ussd-pulls\/send"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"sims\":[1],\"ussd_codes\":[\"*123#\"],\"delay\":60,\"prioritize\":false,\"name\":\"My Campaign\",\"scheduled_at\":\"2021-01-01T12:00:00Z\",\"recurring\":false,\"frequency\":1,\"frequency_unit\":\"day\",\"ends_at\":\"2021-01-01T12:00:00Z\",\"timezone\":\"UTC\",\"days_of_week\":[1],\"active_hours\":{\"start\":\"08:00\",\"end\":\"17:00\"},\"random_sender\":false}"
+                        },
+                        "description": "Sends USSD Pull campaign."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 201,
+                            "body": "{\"id\":14,\"name\":\"Blaise Pouros\",\"scheduled_at\":\"2025-12-16T20:37:15.000000Z\",\"timezone\":\"America\\\/Indiana\\\/Knox\",\"recurring\":true,\"frequency\":5,\"frequency_unit\":\"Minute\",\"ends_at\":\"2026-09-05T09:37:45.000000Z\",\"repeat_at\":null,\"active_hours\":\"09:00-17:00\",\"days_of_week\":[1,3,5,7],\"status\":\"Processed\",\"type\":\"MMS\",\"options\":{\"delay\":\"34\",\"prioritize\":true},\"created_at\":\"2025-09-08T05:42:26.000000Z\",\"updated_at\":\"2025-09-08T05:42:26.000000Z\"}",
+                            "name": "Created"
+                        }
+                    ]
+                },
+                {
+                    "name": "List all USSD pulls",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/ussd-pulls",
+                            "query": [
+                                {
+                                    "key": "user",
+                                    "value": "1",
+                                    "description": "Filter by user id. Only available for admin. Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "campaign",
+                                    "value": "1",
+                                    "description": "Filter by campaign id. Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "sim",
+                                    "value": "1",
+                                    "description": "Filter by sim id. Must be at least 1.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "statuses[0]",
+                                    "value": "Queued",
+                                    "description": "",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "after",
+                                    "value": "2021-01-01",
+                                    "description": "Show USSD pulls that are sent after this date. Must be a valid date in the format Y-m-d. Must be a date before or equal to before.",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "before",
+                                    "value": "2021-01-01",
+                                    "description": "Show USSD pulls that are sent before this date. Must be a valid date in the format Y-m-d. Must be a date after or equal to after.",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/v1\/ussd-pulls?user=1&campaign=1&sim=1&statuses[0]=Queued&after=2021-01-01&before=2021-01-01"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Returns a list of USSD pulls. The USSD pulls are returned sorted by sent date, with the most recently sent USSD pull appearing first."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":281,\"code\":\"*3434200#\",\"response\":null,\"status\":\"Failed\",\"sim_id\":23,\"sent_at\":\"2025-09-08T11:12:26.000000Z\",\"received_at\":null},{\"id\":282,\"code\":\"*32721213140#\",\"response\":\"Aut tempora ut possimus odit nisi sed rem ducimus. Ut voluptatum porro repudiandae doloremque qui in. Id sed voluptatem saepe magnam dicta tempore blanditiis quos.\",\"status\":\"Completed\",\"sim_id\":24,\"sent_at\":\"2025-09-08T11:12:26.000000Z\",\"received_at\":\"2025-09-08T12:31:12.000000Z\"}],\"links\":{\"first\":\"\\\/?page=1\",\"last\":\"\\\/?page=1\",\"prev\":null,\"next\":null},\"meta\":{\"current_page\":1,\"from\":1,\"last_page\":1,\"links\":[{\"url\":null,\"label\":\"&laquo; Previous\",\"page\":null,\"active\":false},{\"url\":\"\\\/?page=1\",\"label\":\"1\",\"page\":1,\"active\":true},{\"url\":null,\"label\":\"Next &raquo;\",\"page\":null,\"active\":false}],\"path\":\"\\\/\",\"per_page\":100,\"to\":2,\"total\":2}}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Retrieve a USSD pull",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/ussd-pulls\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/ussd-pulls\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the ussd pull."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Retrieves a USSD Pull object."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"id\":283,\"code\":\"*00268*8#\",\"response\":null,\"status\":\"Failed\",\"sim_id\":25,\"sent_at\":\"2025-09-08T11:12:26.000000Z\",\"received_at\":null}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete a USSD pull",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/v1\/ussd-pulls\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/v1\/ussd-pulls\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "1",
+                                    "description": "The ID of the ussd pull."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "Permanently deletes a USSD pull. It cannot be undone."
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 204,
+                            "body": null,
+                            "name": "No content"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "Authorization",
+                "type": "string"
+            }
+        ]
+    }
+}

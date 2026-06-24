@@ -1,0 +1,795 @@
+name: 'USSD Pulls'
+description: 'USSD Pulls'
+endpoints:
+  -
+    httpMethods:
+      - GET
+      - POST
+    uri: api/v1/ussd-pulls/send
+    metadata:
+      groupName: 'USSD Pulls'
+      groupDescription: 'USSD Pulls'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Send USSD pulls'
+      description: 'Sends USSD Pull campaign.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      sims:
+        name: sims
+        description: 'The ids of the sims to use for sending the USSD pulls. You can also set the first element to * and it will use all available sims.'
+        required: true
+        example:
+          - 1
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      ussd_codes:
+        name: ussd_codes
+        description: 'The array of USSD codes to send. Must match the regex /(?:\*\d+)+#/.'
+        required: true
+        example:
+          - '*123#'
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      delay:
+        name: delay
+        description: 'The delay in seconds between each USSD pull.'
+        required: false
+        example: 60
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      prioritize:
+        name: prioritize
+        description: 'Whether to prioritize the campaign.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      name:
+        name: name
+        description: 'The name of the campaign. Must not be greater than 255 characters.'
+        required: false
+        example: 'My Campaign'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      scheduled_at:
+        name: scheduled_at
+        description: 'The date and time the campaign is scheduled to run. Must be a valid date.'
+        required: false
+        example: '2021-01-01T12:00:00Z'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      recurring:
+        name: recurring
+        description: 'Whether the campaign is recurring.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      frequency:
+        name: frequency
+        description: 'The frequency of the campaign. This field is required when <code>recurring</code> is <code>true</code>. Must be at least 1.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      frequency_unit:
+        name: frequency_unit
+        description: 'The unit of the frequency. This field is required when <code>recurring</code> is <code>true</code>.'
+        required: false
+        example: day
+        type: string
+        enumValues:
+          - Minute
+          - Hour
+          - Day
+          - Week
+          - Month
+          - Year
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      ends_at:
+        name: ends_at
+        description: 'The date and time when the recurring campaign ends. Must be a valid date.'
+        required: false
+        example: '2021-01-01T12:00:00Z'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      timezone:
+        name: timezone
+        description: 'The timezone of the campaign. This is used for scheduled_at, ends_at, days_of_week, and active_hours. This field is required when <code>active_hours</code>, <code>days_of_week</code>, <code>scheduled_at</code>, or <code>ends_at</code> is present. Must be a valid time zone, such as <code>Africa/Accra</code>.'
+        required: false
+        example: UTC
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      days_of_week:
+        name: days_of_week
+        description: 'The days of the week when the campaign is active.'
+        required: false
+        example:
+          - 1
+        type: 'string[]'
+        enumValues:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
+          - '6'
+          - '7'
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      active_hours:
+        name: active_hours
+        description: 'Must contain 2 items.'
+        required: false
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      active_hours.start:
+        name: active_hours.start
+        description: 'The start time of the active hours. This field is required when <code>active_hours.end</code> is present. Must be a valid date in the format <code>H:i</code>. Must be a date before <code>active_hours.end</code>.'
+        required: false
+        example: '08:00'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      active_hours.end:
+        name: active_hours.end
+        description: 'The end time of the active hours. This field is required when <code>active_hours.start</code> is present. Must be a valid date in the format <code>H:i</code>. Must be a date after <code>active_hours.start</code>.'
+        required: false
+        example: '17:00'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      random_sender:
+        name: random_sender
+        description: 'Whether to use a random sim from selected sims for entire campaign.'
+        required: false
+        example: false
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      sims:
+        - 1
+      ussd_codes:
+        - '*123#'
+      delay: 60
+      prioritize: false
+      name: 'My Campaign'
+      scheduled_at: '2021-01-01T12:00:00Z'
+      recurring: false
+      frequency: 1
+      frequency_unit: day
+      ends_at: '2021-01-01T12:00:00Z'
+      timezone: UTC
+      days_of_week:
+        - 1
+      active_hours:
+        start: '08:00'
+        end: '17:00'
+      random_sender: false
+    fileParameters: []
+    responses:
+      -
+        status: 201
+        content: '{"id":14,"name":"Blaise Pouros","scheduled_at":"2025-12-16T20:37:15.000000Z","timezone":"America\/Indiana\/Knox","recurring":true,"frequency":5,"frequency_unit":"Minute","ends_at":"2026-09-05T09:37:45.000000Z","repeat_at":null,"active_hours":"09:00-17:00","days_of_week":[1,3,5,7],"status":"Processed","type":"MMS","options":{"delay":"34","prioritize":true},"created_at":"2025-09-08T05:42:26.000000Z","updated_at":"2025-09-08T05:42:26.000000Z"}'
+        headers: []
+        description: Created
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 'The ID of the campaign.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 'The name of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      scheduled_at:
+        name: scheduled_at
+        description: 'The date and time when the campaign is scheduled to run.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      timezone:
+        name: timezone
+        description: 'The timezone of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      recurring:
+        name: recurring
+        description: 'Whether the campaign is recurring.'
+        required: true
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      frequency:
+        name: frequency
+        description: 'The frequency of the campaign.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      frequency_unit:
+        name: frequency_unit
+        description: 'The unit of the frequency.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      ends_at:
+        name: ends_at
+        description: 'The date and time when the recurring campaign ends.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      repeat_at:
+        name: repeat_at
+        description: 'The date and time when the campaign is scheduled to repeat.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      active_hours:
+        name: active_hours
+        description: 'The timespan of a day when the campaign is active.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      days_of_week:
+        name: days_of_week
+        description: 'The days of the week when the campaign is active.'
+        required: true
+        example: null
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: 'The status of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      type:
+        name: type
+        description: 'The type of the campaign.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options:
+        name: options
+        description: 'The options of the campaign.'
+        required: true
+        example: null
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options.delay:
+        name: options.delay
+        description: 'The delay between each item before sending the next one.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options.prioritize:
+        name: options.prioritize
+        description: 'Whether to prioritize the campaign.'
+        required: false
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      options.delivery_report:
+        name: options.delivery_report
+        description: 'Whether to request delivery report for SMS.'
+        required: false
+        example: null
+        type: boolean
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      created_at:
+        name: created_at
+        description: 'The date and time the campaign was created.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      updated_at:
+        name: updated_at
+        description: 'The date and time the campaign was last updated.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/ussd-pulls
+    metadata:
+      groupName: 'USSD Pulls'
+      groupDescription: 'USSD Pulls'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'List all USSD pulls'
+      description: 'Returns a list of USSD pulls. The USSD pulls are returned sorted by sent date, with the most recently sent USSD pull appearing first.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      user:
+        name: user
+        description: 'Filter by user id. Only available for admin. Must be at least 1.'
+        required: false
+        example: 1.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      campaign:
+        name: campaign
+        description: 'Filter by campaign id. Must be at least 1.'
+        required: false
+        example: 1.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      sim:
+        name: sim
+        description: 'Filter by sim id. Must be at least 1.'
+        required: false
+        example: 1.0
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      statuses:
+        name: statuses
+        description: ''
+        required: false
+        example:
+          - Queued
+        type: 'string[]'
+        enumValues:
+          - Pending
+          - Queued
+          - Completed
+          - Failed
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      after:
+        name: after
+        description: 'Show USSD pulls that are sent after this date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date before or equal to <code>before</code>.'
+        required: false
+        example: '2021-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      before:
+        name: before
+        description: 'Show USSD pulls that are sent before this date. Must be a valid date in the format <code>Y-m-d</code>. Must be a date after or equal to <code>after</code>.'
+        required: false
+        example: '2021-01-01'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanQueryParameters:
+      user: 1.0
+      campaign: 1.0
+      sim: 1.0
+      statuses:
+        - Queued
+      after: '2021-01-01'
+      before: '2021-01-01'
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":281,"code":"*3434200#","response":null,"status":"Failed","sim_id":23,"sent_at":"2025-09-08T11:12:26.000000Z","received_at":null},{"id":282,"code":"*32721213140#","response":"Aut tempora ut possimus odit nisi sed rem ducimus. Ut voluptatum porro repudiandae doloremque qui in. Id sed voluptatem saepe magnam dicta tempore blanditiis quos.","status":"Completed","sim_id":24,"sent_at":"2025-09-08T11:12:26.000000Z","received_at":"2025-09-08T12:31:12.000000Z"}],"links":{"first":"\/?page=1","last":"\/?page=1","prev":null,"next":null},"meta":{"current_page":1,"from":1,"last_page":1,"links":[{"url":null,"label":"&laquo; Previous","page":null,"active":false},{"url":"\/?page=1","label":"1","page":1,"active":true},{"url":null,"label":"Next &raquo;","page":null,"active":false}],"path":"\/","per_page":100,"to":2,"total":2}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 'The ID of the USSD pull.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      code:
+        name: code
+        description: 'The USSD code.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      response:
+        name: response
+        description: 'The response from the USSD pull.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: 'The status of the USSD pull.'
+        required: true
+        example: null
+        type: string
+        enumValues:
+          - Pending
+          - Queued
+          - Completed
+          - Failed
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      sim_id:
+        name: sim_id
+        description: 'The id of the sim used to send the USSD pull.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      sent_at:
+        name: sent_at
+        description: 'The date and time when the USSD pull was sent.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      received_at:
+        name: received_at
+        description: 'The date and time when the response from the USSD pull was received.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/ussd-pulls/{id}'
+    metadata:
+      groupName: 'USSD Pulls'
+      groupDescription: 'USSD Pulls'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Retrieve a USSD pull'
+      description: 'Retrieves a USSD Pull object.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the ussd pull.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":283,"code":"*00268*8#","response":null,"status":"Failed","sim_id":25,"sent_at":"2025-09-08T11:12:26.000000Z","received_at":null}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 'The ID of the USSD pull.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      code:
+        name: code
+        description: 'The USSD code.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      response:
+        name: response
+        description: 'The response from the USSD pull.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: 'The status of the USSD pull.'
+        required: true
+        example: null
+        type: string
+        enumValues:
+          - Pending
+          - Queued
+          - Completed
+          - Failed
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      sim_id:
+        name: sim_id
+        description: 'The id of the sim used to send the USSD pull.'
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      sent_at:
+        name: sent_at
+        description: 'The date and time when the USSD pull was sent.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      received_at:
+        name: received_at
+        description: 'The date and time when the response from the USSD pull was received.'
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/ussd-pulls/{id}'
+    metadata:
+      groupName: 'USSD Pulls'
+      groupDescription: 'USSD Pulls'
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Delete a USSD pull'
+      description: 'Permanently deletes a USSD pull. It cannot be undone.'
+      authenticated: true
+      deprecated: false
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the ussd pull.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 204
+        content: null
+        headers: []
+        description: 'No content'
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer v8h36E4fegPakDc5ZdV16ba'
+    controller: null
+    method: null
+    route: null
+    custom: []

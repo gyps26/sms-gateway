@@ -1,0 +1,77 @@
+<!--
+  - Copyright © 2018-2025 RBSoft (Ravi Patel). All rights reserved.
+  -
+  - Author: Ravi Patel
+  - Website: https://rbsoft.org/downloads/sms-gateway
+  -
+  - This software is licensed, not sold. Buyers are granted a limited, non-transferable license
+  - to use this software exclusively on a single domain, subdomain, or computer. Usage on
+  - multiple domains, subdomains, or computers requires the purchase of additional licenses.
+  -
+  - Redistribution, resale, sublicensing, or sharing of the source code, in whole or in part,
+  - is strictly prohibited. Modification (except for personal use by the licensee), reverse engineering,
+  - or creating derivative works based on this software is strictly prohibited.
+  -
+  - Unauthorized use, reproduction, or distribution of this software may result in severe civil
+  - and criminal penalties and will be prosecuted to the fullest extent of the law.
+  -
+  - For licensing inquiries or support, please visit https://support.rbsoft.org.
+  -->
+
+<script setup>
+import Modal from './Modal.vue';
+
+const emit = defineEmits(['close']);
+
+defineProps({
+    show: {
+        type: Boolean,
+        default: false,
+    },
+    maxWidth: {
+        type: String,
+        default: '2xl',
+    },
+    closeable: {
+        type: Boolean,
+        default: true,
+    },
+});
+
+const close = () => {
+    emit('close');
+};
+</script>
+
+<template>
+    <Modal
+        :show="show"
+        :max-width="maxWidth"
+        :closeable="closeable"
+        @close="close"
+    >
+        <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div class="sm:flex sm:items-start">
+                <div class="mx-auto shrink-0 flex items-center justify-center size-12 rounded-full bg-red-100 sm:mx-0 sm:size-10">
+                    <svg class="size-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                </div>
+
+                <div class="mt-3 text-center sm:mt-0 sm:ms-4 sm:text-start">
+                    <h3 class="text-lg font-medium text-gray-900">
+                        <slot name="title" />
+                    </h3>
+
+                    <div class="mt-4 text-sm text-gray-600">
+                        <slot name="content" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 text-end">
+            <slot name="footer" />
+        </div>
+    </Modal>
+</template>

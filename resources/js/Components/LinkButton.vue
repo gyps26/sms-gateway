@@ -1,0 +1,44 @@
+<!--
+  - Copyright © 2018-2025 RBSoft (Ravi Patel). All rights reserved.
+  -
+  - Author: Ravi Patel
+  - Website: https://rbsoft.org/downloads/sms-gateway
+  -
+  - This software is licensed, not sold. Buyers are granted a limited, non-transferable license
+  - to use this software exclusively on a single domain, subdomain, or computer. Usage on
+  - multiple domains, subdomains, or computers requires the purchase of additional licenses.
+  -
+  - Redistribution, resale, sublicensing, or sharing of the source code, in whole or in part,
+  - is strictly prohibited. Modification (except for personal use by the licensee), reverse engineering,
+  - or creating derivative works based on this software is strictly prohibited.
+  -
+  - Unauthorized use, reproduction, or distribution of this software may result in severe civil
+  - and criminal penalties and will be prosecuted to the fullest extent of the law.
+  -
+  - For licensing inquiries or support, please visit https://support.rbsoft.org.
+  -->
+
+<script setup>
+import { Link } from '@inertiajs/vue3';
+
+const props = defineProps({
+    target: {
+        type: String,
+        default: null,
+    },
+    download: {
+        type: Boolean,
+        default: null,
+    }
+});
+</script>
+
+<template>
+    <Component
+        :is="target || download ? 'a' : Link"
+        :target = "target"
+        :download="download"
+        class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">
+        <slot />
+    </Component>
+</template>

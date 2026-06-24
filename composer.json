@@ -1,0 +1,109 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The skeleton application for the Laravel framework.",
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "ext-zip": "*",
+        "aws/aws-sdk-php": "^3.314",
+        "google/recaptcha": "1.3",
+        "inertiajs/inertia-laravel": "^2.0",
+        "knuckleswtf/scribe": "^5.2",
+        "kreait/laravel-firebase": "^6.0",
+        "lab404/laravel-impersonate": "^1.7",
+        "laravel/framework": "^12.0",
+        "laravel/jetstream": "^5.3",
+        "laravel/sanctum": "^4.0",
+        "laravel/tinker": "^2.9",
+        "lasserafn/php-initial-avatar-generator": "^4.4",
+        "league/flysystem-ziparchive": "^3.29",
+        "maatwebsite/excel": "^3.1",
+        "prinsfrank/standards": "^v3.8",
+        "razorpay/razorpay": "^2.9",
+        "resend/resend-php": "^0.12.0",
+        "spatie/laravel-data": "^4.8",
+        "spatie/laravel-medialibrary": "^11.5",
+        "spatie/laravel-schemaless-attributes": "^2.5",
+        "spatie/laravel-webhook-client": "^3.4",
+        "spatie/laravel-webhook-server": "^3.8",
+        "staudenmeir/eloquent-has-many-deep": "^1.20",
+        "staudenmeir/eloquent-json-relations": "^1.13",
+        "stripe/stripe-php": "^14.8",
+        "symfony/http-client": "^7.1",
+        "symfony/mailgun-mailer": "^7.1",
+        "symfony/postmark-mailer": "^7.1",
+        "tightenco/ziggy": "^2.0",
+        "twilio/sdk": "^8.1",
+        "webklex/laravel-imap": "^6.1"
+    },
+    "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.13",
+        "barryvdh/laravel-ide-helper": "^3.0",
+        "fakerphp/faker": "^1.23",
+        "laradumps/laradumps": "^4.0",
+        "laravel/pail": "^1.1",
+        "laravel/pint": "^1.13",
+        "laravel/sail": "^1.26",
+        "laravel/telescope": "^5.10",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.1",
+        "pestphp/pest": "^3.6",
+        "pestphp/pest-plugin-laravel": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
+        ],
+        "dev": "npx concurrently -c \"#93c5fd,#c4b5fd,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"npm run dev\" --names='server,queue,vite'"
+    },
+    "config": {
+        "platform": {
+            "php": "8.3.0"
+        },
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "laravel/telescope"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
