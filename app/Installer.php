@@ -230,6 +230,12 @@ class Installer
 
     public function markInstalled(): bool
     {
-        return file_put_contents(storage_path('installed'), '') !== false && File::delete(storage_path('update'));
+        if (file_put_contents(storage_path('installed'), '') === false) {
+            return false;
+        }
+        if (is_file(storage_path('update'))) {
+            @unlink(storage_path('update'));
+        }
+        return true;
     }
 }
