@@ -14,8 +14,8 @@ if [ "$1" = "supervisord" ]; then
 
     if [ $retries -gt 0 ]; then
         echo "MySQL is ready. Running migrations..."
-        php artisan migrate --force
-        php artisan optimize
+        php artisan migrate --force 2>&1 || echo "WARNING: Migration failed (non-fatal)"
+        php artisan optimize 2>&1 || echo "WARNING: Optimize failed (non-fatal)"
         echo "Application ready."
     else
         echo "WARNING: MySQL did not become ready in time. Starting anyway..."
