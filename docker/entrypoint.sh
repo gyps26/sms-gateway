@@ -2,8 +2,6 @@
 set -e
 
 if [ "$1" = "supervisord" ]; then
-    rm -f /var/www/html/storage/installed
-
     # Ensure storage directories exist with correct permissions
     mkdir -p storage/app/private storage/app/public \
         storage/framework/cache/data storage/framework/sessions \
