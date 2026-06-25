@@ -29,8 +29,7 @@ COPY . .
 RUN php artisan storage:link --force 2>/dev/null || true
 RUN composer run-script post-autoload-dump --no-interaction 2>/dev/null || true
 
-RUN mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache \
-    && chmod -R 775 storage bootstrap/cache
+RUN chmod -R 775 bootstrap/cache
 
 FROM php:8.4-fpm-alpine
 
