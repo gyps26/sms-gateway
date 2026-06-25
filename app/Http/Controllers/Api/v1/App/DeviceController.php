@@ -97,6 +97,9 @@ class DeviceController extends Controller
                 [...$data->device->except('sims')->toArray(), 'enabled' => true]
             );
 
+            // Ensure the pivot entry exists (bypass observer, which may not fire on updateOrCreate)
+            $device->users()->syncWithoutDetaching([Auth::id()]);
+
             when($data->device->sims, fn($sims) => $device->updateOrCreateSims($sims->toArray()));
 
             $token = JwtAuth::createToken($device);
