@@ -37,7 +37,11 @@ class QrCodeController extends Controller
         $renderer = new ImageRenderer(new RendererStyle(400), new SvgImageBackEnd());
         $writer = new Writer($renderer);
         $ttl = Setting::retrieve('auth.qr_code.lifespan', Auth::id(), config('auth.qr_code.lifespan'));
-        $content = json_encode(['token' => JwtAuth::createToken(Auth::user(), $ttl), 'server_url' => config('app.url')]);
+        $url = config('app.url');
+        if (parse_url($url, PHP_URL_SCHEME) === 'http') {
+            $url = 'https://' . parse_url($url, PHP_URL_HOST);
+        }
+        $content = json_encode(['token' => JwtAuth::createToken(Auth::user(), $ttl), 'server_url' => $url]);
         $qrCode = $writer->writeString(base64_encode($content));
         return new Response($qrCode, 200, ['Content-Type' => 'image/svg+xml']);
     }

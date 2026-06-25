@@ -53,7 +53,7 @@ class DeviceController extends Controller
 
         return DataTable::make($builder)
                         ->search(fn($query, $search) => $query->search($search))
-                        ->sort(['name', 'model'], default: 'device_user.created_at')
+                        ->sort(['name', 'model'], default: 'devices.created_at')
                         ->render('Devices/Index', fn($data) => [
                             'devices' => fn() => DeviceResource::collection($data()),
                             'users'   => $users
