@@ -119,6 +119,20 @@ class DeviceController extends Controller
     }
 
     /**
+     * One-time fix: attach owners to device_user pivot for any orphaned devices.
+     */
+    public function repairPivot(): RedirectResponse
+    {
+        $count = 0;
+        Device::doesntHave('users')->each(function ($device) use (&$count) {
+            $device->users()->attach($device->owner_id);
+            $count++;
+        });
+
+        return Redirect::back()->with('success', "Repaired $count device(s).");
+    }
+
+    /**
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function retryCampaign(Campaign $campaign, Device $device): RedirectResponse

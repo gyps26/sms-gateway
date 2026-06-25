@@ -103,6 +103,7 @@ Route::middleware(['installed'])->group(function () {
 
             // Devices
             Route::resource('devices', DeviceController::class)->only(['index', 'update', 'destroy']);
+            Route::post('devices/repair-pivot', [DeviceController::class, 'repairPivot'])->name('devices.repair-pivot');
             Route::post('devices/{device}/share', [DeviceController::class, 'share'])->name('devices.share');
 
             // QR Code
