@@ -221,7 +221,7 @@ class User extends Authenticatable implements MustVerifyEmail, JwtSubject, HasLo
      */
     public function devices(): BelongsToMany
     {
-        return $this->belongsToMany(Device::class)->using(DeviceUser::class)->withTimestamps();
+        return $this->belongsToMany(Device::class)->using(DeviceUser::class);
     }
 
     public function ownedDevices(): HasMany

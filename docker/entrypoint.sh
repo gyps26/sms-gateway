@@ -28,6 +28,17 @@ if [ "$1" = "supervisord" ]; then
         php artisan migrate --force 2>&1 || echo "WARNING: Migration failed (non-fatal)"
         php artisan optimize 2>&1 || echo "WARNING: Optimize failed (non-fatal)"
 
+        # Ensure device_user pivot table has timestamp columns
+        php -r "
+            \$pdo = new PDO('mysql:host=${DB_HOST};port=${DB_PORT}', '${DB_USERNAME}', '${DB_PASSWORD}');
+            \$pdo->exec('USE ${DB_DATABASE}');
+            \$stmt = \$pdo->query('SHOW COLUMNS FROM device_user LIKE \"created_at\"');
+            if (!\$stmt->fetch()) {
+                \$pdo->exec('ALTER TABLE device_user ADD COLUMN created_at TIMESTAMP NULL, ADD COLUMN updated_at TIMESTAMP NULL');
+                echo \"Added timestamp columns to device_user.\n\";
+            }
+        " 2>&1 || echo "WARNING: Could not check/add device_user columns"
+
         # Ensure full write access for cache subdirectory creation
         chmod -R 777 storage/framework/cache
         php artisan cache:clear 2>&1 || true

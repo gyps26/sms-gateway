@@ -118,7 +118,7 @@ class Device extends Model implements CampaignableContract, JwtSubject
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->using(DeviceUser::class)->withTimestamps();
+        return $this->belongsToMany(User::class)->using(DeviceUser::class);
     }
 
     public function deviceUsers(): HasMany
