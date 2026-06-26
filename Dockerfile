@@ -47,6 +47,7 @@ COPY --from=builder /var/www/html /var/www/html
 
 COPY docker/supervisord.conf /etc/supervisord.conf
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+COPY docker/www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 

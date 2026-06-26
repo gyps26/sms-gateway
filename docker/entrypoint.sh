@@ -24,11 +24,18 @@ if [ "$1" = "supervisord" ]; then
     if [ $retries -gt 0 ]; then
         echo "MySQL is ready. Running migrations..."
         php artisan migrate --force 2>&1 || echo "WARNING: Migration failed (non-fatal)"
-        php artisan optimize 2>&1 || echo "WARNING: Optimize failed (non-fatal)"
 
+        # Generate APP_KEY if not set
+        php artisan key:generate --force 2>&1 || true
+
+        # Clear old cache first, then optimize
+        php artisan cache:clear 2>&1 || true
         # Ensure full write access for cache subdirectory creation
         chmod -R 777 storage/framework/cache
-        php artisan cache:clear 2>&1 || true
+        php artisan optimize 2>&1 || echo "WARNING: Optimize failed (non-fatal)"
+
+        # Recreate storage symlink (volume mount may have replaced it)
+        php artisan storage:link --force 2>&1 || true
 
         echo "Application ready."
     else

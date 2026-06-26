@@ -5,11 +5,11 @@ services:
     expose:
       - "80"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+      test: ["CMD", "curl", "-f", "http://localhost/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 180s
     environment:
       APP_ENV: production
       APP_DEBUG: false
@@ -42,7 +42,7 @@ services:
 
   queue:
     image: gypson1234/sms-gateway:latest
-    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    command: php artisan queue:work --sleep=3 --tries=3 --max-time=3600 --memory=128
     restart: unless-stopped
     environment:
       APP_ENV: production

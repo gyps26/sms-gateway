@@ -98,18 +98,6 @@ Schedule::call(function () {
         ->everyMinute()
         ->withoutOverlapping();
 
-if (config('queue.default') !== 'sync') {
-    Schedule::command(
-                sprintf(
-                    "queue:work --stop-when-empty --queue=%s --timeout=0",
-                    config('queue.connections.database.queue')
-                )
-            )
-            ->name('queue')
-            ->everyTenSeconds()
-            ->withoutOverlapping();
-}
-
 Schedule::call(function () {
             Campaignable::whereDoesntHaveMorph('campaignable', [Device::class, SendingServer::class])
                         ->delete();
