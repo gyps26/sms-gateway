@@ -23,7 +23,7 @@ services:
       DB_USERNAME: sail
       DB_PASSWORD: "${DB_PASSWORD:-password}"
       DB_PREFIX: ""
-      SESSION_DRIVER: database
+      SESSION_DRIVER: file
       SESSION_LIFETIME: 120
       QUEUE_CONNECTION: database
       CACHE_STORE: file
@@ -57,7 +57,7 @@ services:
       DB_USERNAME: sail
       DB_PASSWORD: "${DB_PASSWORD:-password}"
       DB_PREFIX: ""
-      SESSION_DRIVER: database
+      SESSION_DRIVER: file
       SESSION_LIFETIME: 120
       QUEUE_CONNECTION: database
       CACHE_STORE: file
@@ -91,7 +91,7 @@ services:
       DB_USERNAME: sail
       DB_PASSWORD: "${DB_PASSWORD:-password}"
       DB_PREFIX: ""
-      SESSION_DRIVER: database
+      SESSION_DRIVER: file
       SESSION_LIFETIME: 120
       QUEUE_CONNECTION: database
       CACHE_STORE: file
