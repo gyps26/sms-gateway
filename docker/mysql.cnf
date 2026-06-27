@@ -10,3 +10,8 @@ tmp_table_size = 32M
 max_heap_table_size = 32M
 query_cache_type = 0
 performance_schema = OFF
+
+# Prevent idle connection drops
+wait_timeout = 600
+interactive_timeout = 600
+max_allowed_packet = 64M
